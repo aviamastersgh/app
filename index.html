@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-<title>Security Check</title>
+<title>Access Guide</title>
 <style>
     /* --- RESET & VARS --- */
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -19,22 +19,45 @@
         margin: 0; padding: 0; overflow-x: hidden;
     }
 
-    /* --- 1. WEBVIEW GUIDE (ЗАЩИТА ОТ TIKTOK) --- */
+    /* --- 1. WEBVIEW GUIDE (STYLISH) --- */
     #webview-guide {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: #000; z-index: 10000;
-        display: none; /* Скрыто по умолчанию, JS включит если нужно */
+        background: rgba(18, 18, 18, 0.98); /* Почти непрозрачный фон */
+        z-index: 10000;
+        display: none; /* JS включит это */
         flex-direction: column; align-items: center; justify-content: center;
-        text-align: center; padding: 20px;
+        padding: 20px; text-align: center;
+        backdrop-filter: blur(10px);
     }
-    .arrow-pointer {
-        position: absolute; top: 20px; right: 20px;
-        font-size: 50px; color: var(--gold);
-        animation: bounce 1.5s infinite;
+    
+    /* Ровная SVG стрелка */
+    .guide-arrow {
+        position: absolute; top: 10px; right: 20px;
+        width: 80px; height: 80px;
+        fill: var(--gold);
+        filter: drop-shadow(0 0 10px rgba(255, 193, 7, 0.5));
+        animation: point-up 1.5s ease-in-out infinite;
     }
-    .wv-text { font-size: 20px; font-weight: 800; color: #fff; margin-top: 100px; line-height: 1.5; }
-    .wv-sub { font-size: 14px; color: #ccc; margin-top: 10px; }
-    @keyframes bounce { 0%, 100% { transform: translate(0, 0) rotate(45deg); } 50% { transform: translate(10px, -10px) rotate(45deg); } }
+
+    .guide-card {
+        background: var(--card); border: 1px solid #333;
+        padding: 30px 20px; border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        max-width: 320px; width: 100%;
+        position: relative;
+    }
+
+    .guide-icon { font-size: 40px; margin-bottom: 15px; }
+    .guide-title { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 10px; line-height: 1.2; }
+    .guide-title span { color: var(--gold); }
+    .guide-steps { text-align: left; margin-top: 20px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; }
+    .step-row { display: flex; gap: 10px; margin-bottom: 10px; font-size: 14px; color: #ddd; align-items: flex-start; }
+    .step-num { background: var(--accent); color: #000; font-weight: 700; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; margin-top: 2px; }
+
+    @keyframes point-up {
+        0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+        50% { transform: translate(10px, -15px) rotate(5deg); opacity: 0.8; }
+    }
 
     /* --- 2. MAIN APP STYLES --- */
     #main-app { display: none; padding: 15px; max-width: 450px; margin: 0 auto 80px; }
@@ -70,7 +93,6 @@
     }
     .code { font-weight: 800; color: var(--gold); font-size: 16px; letter-spacing: 1px; }
 
-    /* Support Buttons & Download Loading */
     .support-row { display: flex; gap: 10px; margin-top: 15px; width: 100%; }
     .sec-btn {
         flex: 1; background: var(--card); padding: 12px 10px;
@@ -118,14 +140,24 @@
 <body>
 
 <div id="webview-guide">
-    <div class="arrow-pointer">➤</div>
-    <div class="wv-text">
-        PLEASE OPEN IN<br>
-        <span style="color:var(--gold)">CHROME / SAFARI</span>
-    </div>
-    <div class="wv-sub">
-        1. Tap the <b>...</b> or <b>Share</b> icon above<br>
-        2. Select <b>Open in Browser</b>
+    <svg class="guide-arrow" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16.0037 9.41421L7.39712 18.0208L5.98291 16.6066L14.5895 8H7.00373V6H18.0037V17H16.0037V9.41421Z"/>
+    </svg>
+
+    <div class="guide-card">
+        <div class="guide-icon">⚠️</div>
+        <div class="guide-title" id="wv-title">Browser Error<br><span>Action Required</span></div>
+        
+        <div class="guide-steps">
+            <div class="step-row">
+                <div class="step-num">1</div>
+                <span id="wv-step1">Tap the menu icon (•••) above</span>
+            </div>
+            <div class="step-row">
+                <div class="step-num">2</div>
+                <span id="wv-step2">Select "Open in Browser"</span>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -201,51 +233,40 @@
     const WA_LINK = "https://whatsapp.com/channel/0029Vb6IjfI4tRrn1IzWzP16/298";
     const DOWNLOAD_LINK = "/app.apk"; 
 
-    /* --- УСИЛЕННАЯ ЛОГИКА ДЕТЕКТА TIKTOK --- */
+    /* --- ДЕТЕКТ TIKTOK / WEBVIEW --- */
     function detectInAppBrowser() {
         const ua = navigator.userAgent || navigator.vendor || window.opera;
-        
-        // 1. Стандартные проверки
         const isFB = (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1);
         const isIG = (ua.indexOf("Instagram") > -1);
         const isTK = (ua.indexOf("TikTok") > -1);
-        
-        // 2. Усиленные проверки для TikTok и других
-        // 'BytedanceWebview' - это основной маркер ТикТока, который часто забывают
         const isByteDance = (ua.indexOf("BytedanceWebview") > -1); 
-        
-        // 3. Универсальная проверка для Android
-        // Практически все встроенные браузеры на Android содержат '; wv'
-        // Обычный Chrome на Android НЕ содержит 'wv'
         const isAndroidWebView = (ua.indexOf("wv") > -1); 
 
         return isFB || isIG || isTK || isByteDance || isAndroidWebView;
     }
 
     document.addEventListener("DOMContentLoaded", function() {
+        localize(); // Сразу переводим все, включая инструкцию
+
         if (detectInAppBrowser()) {
-            // ПОКАЗЫВАЕМ ИНСТРУКЦИЮ
+            // Показываем новую стильную инструкцию
             document.getElementById('webview-guide').style.display = 'flex';
-            // На всякий случай скрываем контент, если он не был скрыт CSS
             document.getElementById('main-app').style.display = 'none';
             document.getElementById('sticky-foot').style.display = 'none';
         } else {
-            // ЗАПУСКАЕМ САЙТ
+            // Запускаем сайт
             document.getElementById('main-app').style.display = 'block';
             document.getElementById('sticky-foot').style.display = 'flex';
             initApp();
         }
     });
 
-    /* --- ИМИТАЦИЯ ЗАГРУЗКИ ПРИЛОЖЕНИЯ --- */
     function startDownload(e) {
         e.preventDefault(); 
         const btn = document.getElementById('dl-link');
         const txt = document.getElementById('dl-text');
-        
         btn.classList.add('loading');
         txt.innerHTML = "⏳ 0%";
-        
         setTimeout(() => { txt.innerHTML = "⏳ 34%"; }, 700);
         setTimeout(() => { txt.innerHTML = "⏳ 89%"; }, 1600);
         setTimeout(() => { 
@@ -254,19 +275,21 @@
         }, 2200);
     }
 
-    /* --- ФУНКЦИОНАЛ САЙТА --- */
     function initApp() {
         document.getElementById('cta-link').href = MAIN_LINK;
         document.getElementById('sticky-link').href = MAIN_LINK;
         document.getElementById('wa-link').href = WA_LINK;
-        
-        localize();
         startTimer(300, document.querySelector('#timer'));
     }
 
-    /* --- БАЗА ПЕРЕВОДОВ --- */
+    /* --- БАЗА ПЕРЕВОДОВ + ПЕРЕВОДЫ ИНСТРУКЦИИ --- */
     const content = {
         en: {
+            // Guide
+            wv_title: "Open in<br><span>System Browser</span>",
+            wv_step1: "Tap the menu icon (•••) above",
+            wv_step2: "Select <b>'Open in Browser'</b>",
+            // App
             hero: "Play Games & <br><span>Earn Daily</span>", sub: "Instant withdrawal to Mobile Money.",
             btn: "REGISTER NOW", timer: "Bonus ends:", promo: "Use Promo:",
             games: "🔥 Hot Games", reviews: "💬 Player Reviews", online: "2,104 Online",
@@ -274,6 +297,11 @@
             currency: "GHS", video: "📹 Video Guide", download: "📲 Download App"
         },
         fr: {
+            // Guide
+            wv_title: "Ouvrir dans<br><span>le Navigateur</span>",
+            wv_step1: "Appuyez sur le menu (•••) en haut",
+            wv_step2: "Choisissez <b>'Ouvrir le navigateur'</b>",
+            // App
             hero: "Jouez et <br><span>Gagnez Cash</span>", sub: "Retraits instantanés (Orange/MTN).",
             btn: "S'INSCRIRE", timer: "Bonus expire:", promo: "Code Promo:",
             games: "🔥 Jeux Populaires", reviews: "💬 Avis Joueurs", online: "2,104 en ligne",
@@ -281,6 +309,11 @@
             currency: "XAF", video: "📹 Guide Vidéo", download: "📲 Télécharger"
         },
         pt: {
+            // Guide
+            wv_title: "Abrir no<br><span>Navegador</span>",
+            wv_step1: "Toque no menu (•••) acima",
+            wv_step2: "Escolha <b>'Abrir no Navegador'</b>",
+            // App
             hero: "Jogue e <br><span>Ganhe Diário</span>", sub: "Saques rápidos via Mobile Money.",
             btn: "REGISTRAR", timer: "Bônus expira:", promo: "Cód. Promo:",
             games: "🔥 Jogos Quentes", reviews: "💬 Avaliações", online: "2,104 Online",
@@ -288,10 +321,15 @@
             currency: "AOA", video: "📹 Guia de Vídeo", download: "📲 Baixar App"
         },
         ru: {
+            // Guide
+            wv_title: "Откройте в<br><span>Браузере</span>",
+            wv_step1: "Нажмите на меню (•••) сверху",
+            wv_step2: "Выберите <b>'Открыть в браузере'</b>",
+            // App
             hero: "Играй и <br><span>Зарабатывай</span>", sub: "Моментальный вывод на карту.",
             btn: "РЕГИСТРАЦИЯ", timer: "Бонус истекает:", promo: "Промокод:",
             games: "🔥 Лучшие Игры", reviews: "💬 Отзывы", online: "2,104 Онлайн",
-            rev1: "Вывели деньги за 5 минут. Отличное приложение.", rev2: "Сегодня слот хорошо дает!", rev3: "Быстрая регистрация. Мне нравится.",
+            rev1: "Вывели деньги за 5 минут. Топ.", rev2: "Слот сегодня дает!", rev3: "Быстрая регистрация.",
             currency: "RUB", video: "📹 Видео Гайд", download: "📲 Скачать Приложение"
         }
     };
@@ -301,6 +339,12 @@
         if (!content[lang]) lang = 'en';
         const txt = content[lang];
 
+        // Перевод инструкции
+        document.getElementById('wv-title').innerHTML = txt.wv_title;
+        document.getElementById('wv-step1').innerHTML = txt.wv_step1;
+        document.getElementById('wv-step2').innerHTML = txt.wv_step2;
+
+        // Перевод приложения
         document.getElementById('hero-title').innerHTML = txt.hero;
         document.getElementById('hero-sub').textContent = txt.sub;
         document.getElementById('btn-txt').textContent = txt.btn;
