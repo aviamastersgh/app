@@ -23,7 +23,7 @@
     #webview-guide {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background: #000; z-index: 10000;
-        display: none;
+        display: none; /* Скрыто по умолчанию, JS включит если нужно */
         flex-direction: column; align-items: center; justify-content: center;
         text-align: center; padding: 20px;
     }
@@ -199,20 +199,38 @@
     /* --- НАСТРОЙКИ --- */
     const MAIN_LINK = "https://1wgcmt.com/v3/3245/landing-universal-timer?p=6i9o";
     const WA_LINK = "https://whatsapp.com/channel/0029Vb6IjfI4tRrn1IzWzP16/298";
-    // *** ИЗМЕНИТЕ ЭТУ КОНСТАНТУ НА ОТНОСИТЕЛЬНЫЙ ПУТЬ К ВАШЕМУ ФАЙЛУ В VERCEL (например, /myapp.apk) ***
     const DOWNLOAD_LINK = "/app.apk"; 
 
-    /* --- ЛОГИКА ЗАПУСКА --- */
-    document.addEventListener("DOMContentLoaded", function() {
+    /* --- УСИЛЕННАЯ ЛОГИКА ДЕТЕКТА TIKTOK --- */
+    function detectInAppBrowser() {
         const ua = navigator.userAgent || navigator.vendor || window.opera;
-        // Проверка на встроенный браузер ТикТок/Инстаграм
-        const isWebView = (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1) || (ua.indexOf("Instagram") > -1) || (ua.indexOf("TikTok") > -1);
+        
+        // 1. Стандартные проверки
+        const isFB = (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1);
+        const isIG = (ua.indexOf("Instagram") > -1);
+        const isTK = (ua.indexOf("TikTok") > -1);
+        
+        // 2. Усиленные проверки для TikTok и других
+        // 'BytedanceWebview' - это основной маркер ТикТока, который часто забывают
+        const isByteDance = (ua.indexOf("BytedanceWebview") > -1); 
+        
+        // 3. Универсальная проверка для Android
+        // Практически все встроенные браузеры на Android содержат '; wv'
+        // Обычный Chrome на Android НЕ содержит 'wv'
+        const isAndroidWebView = (ua.indexOf("wv") > -1); 
 
-        if (isWebView) {
-            // Если ТикТок - показываем инструкцию (КЛОАКА)
+        return isFB || isIG || isTK || isByteDance || isAndroidWebView;
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        if (detectInAppBrowser()) {
+            // ПОКАЗЫВАЕМ ИНСТРУКЦИЮ
             document.getElementById('webview-guide').style.display = 'flex';
+            // На всякий случай скрываем контент, если он не был скрыт CSS
+            document.getElementById('main-app').style.display = 'none';
+            document.getElementById('sticky-foot').style.display = 'none';
         } else {
-            // Если обычный браузер - запускаем сайт СРАЗУ (без проверки)
+            // ЗАПУСКАЕМ САЙТ
             document.getElementById('main-app').style.display = 'block';
             document.getElementById('sticky-foot').style.display = 'flex';
             initApp();
@@ -232,7 +250,6 @@
         setTimeout(() => { txt.innerHTML = "⏳ 89%"; }, 1600);
         setTimeout(() => { 
             txt.innerHTML = "✅ DONE"; 
-            // Переход на файл, размещенный на Vercel
             window.location.href = DOWNLOAD_LINK; 
         }, 2200);
     }
@@ -247,51 +264,41 @@
         startTimer(300, document.querySelector('#timer'));
     }
 
-    /* --- БАЗА ПЕРЕВОДОВ (добавлен RU) --- */
+    /* --- БАЗА ПЕРЕВОДОВ --- */
     const content = {
         en: {
             hero: "Play Games & <br><span>Earn Daily</span>", sub: "Instant withdrawal to Mobile Money.",
             btn: "REGISTER NOW", timer: "Bonus ends:", promo: "Use Promo:",
             games: "🔥 Hot Games", reviews: "💬 Player Reviews", online: "2,104 Online",
             rev1: "Very fast withdrawal to MTN. Good app.", rev2: "The crash game is paying well today!", rev3: "Simple registration. I like it.",
-            currency: "GHS",
-            video: "📹 Video Guide",
-            download: "📲 Download App"
+            currency: "GHS", video: "📹 Video Guide", download: "📲 Download App"
         },
         fr: {
             hero: "Jouez et <br><span>Gagnez Cash</span>", sub: "Retraits instantanés (Orange/MTN).",
             btn: "S'INSCRIRE", timer: "Bonus expire:", promo: "Code Promo:",
             games: "🔥 Jeux Populaires", reviews: "💬 Avis Joueurs", online: "2,104 en ligne",
             rev1: "Retrait très rapide vers Orange.", rev2: "Le jeu Crash paie bien !", rev3: "Inscription simple.",
-            currency: "XAF",
-            video: "📹 Guide Vidéo",
-            download: "📲 Télécharger"
+            currency: "XAF", video: "📹 Guide Vidéo", download: "📲 Télécharger"
         },
         pt: {
             hero: "Jogue e <br><span>Ganhe Diário</span>", sub: "Saques rápidos via Mobile Money.",
             btn: "REGISTRAR", timer: "Bônus expira:", promo: "Cód. Promo:",
             games: "🔥 Jogos Quentes", reviews: "💬 Avaliações", online: "2,104 Online",
             rev1: "Saque muito rápido.", rev2: "Ganhando bem no Aviator!", rev3: "Fácil de usar.",
-            currency: "AOA",
-            video: "📹 Guia de Vídeo",
-            download: "📲 Baixar App"
+            currency: "AOA", video: "📹 Guia de Vídeo", download: "📲 Baixar App"
         },
         ru: {
             hero: "Играй и <br><span>Зарабатывай</span>", sub: "Моментальный вывод на карту.",
             btn: "РЕГИСТРАЦИЯ", timer: "Бонус истекает:", promo: "Промокод:",
             games: "🔥 Лучшие Игры", reviews: "💬 Отзывы", online: "2,104 Онлайн",
             rev1: "Вывели деньги за 5 минут. Отличное приложение.", rev2: "Сегодня слот хорошо дает!", rev3: "Быстрая регистрация. Мне нравится.",
-            currency: "RUB",
-            video: "📹 Видео Гайд",
-            download: "📲 Скачать Приложение"
+            currency: "RUB", video: "📹 Видео Гайд", download: "📲 Скачать Приложение"
         }
     };
 
     function localize() {
         let lang = navigator.language.slice(0, 2);
-        
         if (!content[lang]) lang = 'en';
-        
         const txt = content[lang];
 
         document.getElementById('hero-title').innerHTML = txt.hero;
@@ -303,7 +310,6 @@
         document.getElementById('games-title').textContent = txt.games;
         document.getElementById('reviews-title').textContent = txt.reviews;
         document.getElementById('online-txt').textContent = txt.online;
-        
         document.getElementById('wa-link').textContent = txt.video;
         document.getElementById('dl-text').textContent = txt.download; 
 
