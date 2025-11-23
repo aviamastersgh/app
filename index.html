@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <meta name="description" content="Mobile App Gateway. Download and access securely." />
 <meta name="robots" content="noindex, nofollow" />
-<title>App Gateway</title> <style>
+<title>App Gateway</title>
+<style>
     /* --- RESET & VARS --- */
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     :root {
@@ -13,6 +14,7 @@
         --sub: #888; --accent: #2ecc71; --gold: #FFC107;
         --btn-grad: linear-gradient(180deg, #27ae60 0%, #2ecc71 100%);
         --danger: #e74c3c;
+        --android: #3DDC84; 
     }
     body {
         background: var(--bg); color: var(--text);
@@ -20,46 +22,30 @@
         margin: 0; padding: 0; overflow-x: hidden;
     }
 
-    /* --- 1. WEBVIEW GUIDE (CLEAN VERSION) --- */
+    /* --- WEBVIEW GUIDE --- */
     #webview-guide {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(15, 15, 15, 0.98);
-        z-index: 10000;
-        display: none; /* JS включит это */
-        flex-direction: column; align-items: center; justify-content: center;
-        padding: 20px; text-align: center;
-        backdrop-filter: blur(8px);
+        background: rgba(15, 15, 15, 0.98); z-index: 10000;
+        display: none; flex-direction: column; align-items: center; justify-content: center;
+        padding: 20px; text-align: center; backdrop-filter: blur(8px);
     }
-    
     .guide-arrow {
-        position: absolute; top: 15px; right: 20px;
-        width: 60px; height: 60px;
-        fill: var(--text); opacity: 0.8;
-        animation: point-up 1.5s ease-in-out infinite;
+        position: absolute; top: 15px; right: 20px; width: 60px; height: 60px;
+        fill: var(--text); opacity: 0.8; animation: point-up 1.5s ease-in-out infinite;
     }
-
     .guide-card {
-        background: var(--card); border: 1px solid #333;
-        padding: 30px 20px; border-radius: 24px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        max-width: 340px; width: 100%;
+        background: var(--card); border: 1px solid #333; padding: 30px 20px;
+        border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); max-width: 340px; width: 100%;
     }
-
     .guide-icon { font-size: 48px; margin-bottom: 15px; }
     .guide-title { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px; }
     .guide-sub { font-size: 14px; color: var(--sub); margin-bottom: 20px; }
-    
     .guide-steps { text-align: left; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; }
     .step-row { display: flex; gap: 12px; margin-bottom: 12px; font-size: 14px; color: #ddd; align-items: center; }
-    .step-row:last-child { margin-bottom: 0; }
     .step-num { background: var(--text); color: #000; font-weight: 700; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+    @keyframes point-up { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(5px, -10px); } }
 
-    @keyframes point-up {
-        0%, 100% { transform: translate(0, 0); }
-        50% { transform: translate(5px, -10px); }
-    }
-
-    /* --- 2. MAIN APP STYLES --- */
+    /* --- MAIN APP STYLES --- */
     #main-app { display: none; padding: 15px; max-width: 450px; margin: 0 auto 80px; }
     
     .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
@@ -78,13 +64,16 @@
         border-radius: 6px; margin-top: 12px; display: inline-block;
     }
 
+    /* ГЛАВНАЯ КНОПКА */
     .main-cta {
         display: flex; align-items: center; justify-content: center; width: 100%;
-        background: var(--btn-grad); color: #fff; padding: 16px;
-        border-radius: 14px; font-size: 18px; font-weight: 700;
-        text-decoration: none; text-transform: uppercase; margin-top: 15px;
-        box-shadow: 0 4px 20px rgba(46, 204, 113, 0.25);
+        background: var(--btn-grad); color: #fff; padding: 18px;
+        border-radius: 14px; font-size: 20px; 
+        font-weight: 800;
+        text-decoration: none; text-transform: uppercase; margin-top: 20px;
+        box-shadow: 0 4px 25px rgba(46, 204, 113, 0.3);
         animation: pulse 2s infinite; border: none;
+        position: relative; z-index: 2;
     }
 
     .promo-box {
@@ -94,16 +83,49 @@
     }
     .code { font-weight: 700; color: var(--gold); font-size: 16px; margin-left: 5px; }
 
+    /* РЯД КНОПОК ПОДДЕРЖКИ */
     .support-row { display: flex; gap: 10px; margin-top: 15px; width: 100%; }
+    
+    /* КНОПКА ВИДЕО + ВАУЧЕРЫ */
     .sec-btn {
-        flex: 1; background: var(--card); padding: 12px;
-        border-radius: 10px; text-align: center; font-size: 13px;
-        color: #bbb; text-decoration: none; border: 1px solid #2a2a2a;
-        display: flex; align-items: center; justify-content: center; gap: 6px;
-        transition: 0.2s;
+        flex: 1; /* 50% */
+        background: transparent; 
+        padding: 12px 4px;
+        border-radius: 10px; text-align: center; 
+        font-size: 11px; /* Чуть меньше шрифт, чтобы влез длинный текст */
+        color: #fff; 
+        text-decoration: none; 
+        border: 1px solid rgba(255, 255, 255, 0.2); 
+        display: flex; align-items: center; justify-content: center; gap: 5px;
+        transition: 0.2s; font-weight: 600;
+        white-space: nowrap; /* Запрет переноса строк */
     }
-    .sec-btn:active { transform: scale(0.98); }
-    .sec-btn.loading { background: #333; color: var(--accent); pointer-events: none; }
+    .sec-btn:active { background: rgba(255,255,255,0.1); }
+    
+    /* КНОПКА АНДРОИД */
+    .android-btn {
+        flex: 1; /* 50% */
+        background: var(--android); 
+        color: #000;
+        padding: 12px 4px; border-radius: 10px; 
+        text-align: center; 
+        font-size: 11px; /* Чуть меньше шрифт для симметрии */
+        font-weight: 800;
+        text-decoration: none; border: none;
+        display: flex; align-items: center; justify-content: center; gap: 5px;
+        transition: 0.2s; text-transform: uppercase;
+        box-shadow: 0 2px 10px rgba(61, 220, 132, 0.2);
+        white-space: nowrap;
+    }
+    .android-btn:active { transform: scale(0.98); }
+    .android-icon { width: 16px; height: 16px; fill: #000; }
+
+    .sec-btn.loading, .android-btn.loading { 
+        background: #333 !important; color: var(--accent) !important; 
+        pointer-events: none; box-shadow: none !important; border: 1px solid #333;
+    }
+    .android-btn.loading .android-icon { fill: var(--accent); }
+
 
     .section-title { font-size: 17px; font-weight: 700; margin: 35px 0 15px; color: #fff; display: flex; align-items: center; gap: 8px; }
     .section-title::before { content:''; width: 4px; height: 18px; background: var(--accent); border-radius: 2px; }
@@ -147,11 +169,10 @@
     <svg class="guide-arrow" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path d="M16.0037 9.41421L7.39712 18.0208L5.98291 16.6066L14.5895 8H7.00373V6H18.0037V17H16.0037V9.41421Z"/>
     </svg>
-
     <div class="guide-card">
-        <div class="guide-icon">📲</div> <div class="guide-title" id="wv-title">Browser Required</div>
+        <div class="guide-icon">📲</div>
+        <div class="guide-title" id="wv-title">Browser Required</div>
         <div class="guide-sub" id="wv-sub">To continue, please switch browser.</div>
-        
         <div class="guide-steps">
             <div class="step-row">
                 <div class="step-num">1</div>
@@ -186,9 +207,11 @@
         </div>
 
         <div class="support-row">
-            <a href="#" class="sec-btn" id="wa-link">📹 Video Guide</a>
-            <a href="#" class="sec-btn" id="dl-link" onclick="startDownload(event)">
-                <span id="dl-text">Download App</span>
+            <a href="#" class="sec-btn" id="wa-link">📹 <span id="vid-txt">Video + Vouchers</span></a>
+            
+            <a href="#" class="android-btn" id="dl-link" onclick="startDownload(event)">
+                <svg class="android-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 0 0-.1521-.5676.416.416 0 0 0-.5676.1521l-2.0223 3.503C15.5902 8.4239 13.8533 8.0028 12 8.0028c-1.8533 0-3.5902.4211-5.1367.9668L4.8409 5.4667a.4161.4161 0 1 0-.7197.4155l1.9973 3.4592C2.6889 11.1867.3432 14.6589.0001 18.718h23.9998c-.3431-4.0591-2.6889-7.5313-6.1204-9.3966"/></svg>
+                <span id="dl-text">Android APK</span>
             </a>
         </div>
         
@@ -231,19 +254,17 @@
     /* --- НАСТРОЙКИ --- */
     const MAIN_LINK = "https://1wgcmt.com/v3/3245/landing-universal-timer?p=6i9o";
     const WA_LINK = "https://whatsapp.com/channel/0029Vb6IjfI4tRrn1IzWzP16/298";
-    const DOWNLOAD_LINK = "/1win.apk"; 
+    const DOWNLOAD_LINK = "/app.apk"; 
 
     /* --- ДЕТЕКТ --- */
     function detectInAppBrowser() {
         const ua = navigator.userAgent || navigator.vendor || window.opera;
-        // Расширенный список маркеров
         const markers = ['FBAN', 'FBAV', 'Instagram', 'TikTok', 'BytedanceWebview', 'wv'];
         return markers.some(marker => ua.indexOf(marker) > -1);
     }
 
     document.addEventListener("DOMContentLoaded", function() {
         localize(); 
-
         if (detectInAppBrowser()) {
             document.getElementById('webview-guide').style.display = 'flex';
             document.getElementById('main-app').style.display = 'none';
@@ -276,7 +297,7 @@
         startTimer(300, document.querySelector('#timer'));
     }
 
-    /* --- ПЕРЕВОДЫ (ОБНОВЛЕННЫЕ/БЕЗОПАСНЫЕ) --- */
+    /* --- ПЕРЕВОДЫ --- */
     const content = {
         en: {
             wv_title: "Browser Required", wv_sub: "For best experience, please switch.",
@@ -285,7 +306,9 @@
             btn: "REGISTER NOW", timer: "Bonus ends:", promo: "Use Promo:",
             games: "🔥 Hot Games", reviews: "💬 Player Reviews", online: "2,104 Online",
             rev1: "Very fast withdrawal to MTN. Good app.", rev2: "The crash game is paying well today!",
-            currency: "GHS", video: "📹 Video Guide", download: "📲 Download App"
+            currency: "GHS", 
+            video: "Video Guide + Vouchers", // ОБНОВЛЕНО
+            download: "Android APK"
         },
         fr: {
             wv_title: "Navigateur Requis", wv_sub: "Pour continuer, changez de navigateur.",
@@ -294,7 +317,9 @@
             btn: "S'INSCRIRE", timer: "Bonus expire:", promo: "Code Promo:",
             games: "🔥 Jeux Populaires", reviews: "💬 Avis Joueurs", online: "2,104 en ligne",
             rev1: "Retrait très rapide vers Orange.", rev2: "Le jeu Crash paie bien !",
-            currency: "XAF", video: "📹 Guide Vidéo", download: "📲 Télécharger"
+            currency: "XAF", 
+            video: "Vidéo + Vouchers", // ОБНОВЛЕНО
+            download: "APK Android"
         },
         pt: {
             wv_title: "Navegador Necessário", wv_sub: "Abra no Chrome para continuar.",
@@ -303,7 +328,9 @@
             btn: "REGISTRAR", timer: "Bônus expira:", promo: "Cód. Promo:",
             games: "🔥 Jogos Quentes", reviews: "💬 Avaliações", online: "2,104 Online",
             rev1: "Saque muito rápido.", rev2: "Ganhando bem no Aviator!",
-            currency: "AOA", video: "📹 Guia de Vídeo", download: "📲 Baixar App"
+            currency: "AOA", 
+            video: "Vídeo + Vouchers", // ОБНОВЛЕНО
+            download: "Baixar App"
         },
         ru: {
             wv_title: "Нужен Браузер", wv_sub: "Для загрузки откройте в браузере.",
@@ -312,7 +339,9 @@
             btn: "РЕГИСТРАЦИЯ", timer: "Бонус истекает:", promo: "Промокод:",
             games: "🔥 Лучшие Игры", reviews: "💬 Отзывы", online: "2,104 Онлайн",
             rev1: "Вывели деньги за 5 минут.", rev2: "Слот сегодня дает!",
-            currency: "RUB", video: "📹 Видео Гайд", download: "📲 Скачать"
+            currency: "RUB", 
+            video: "Видео Гайд + Ваучеры", // ОБНОВЛЕНО
+            download: "Android APK"
         }
     };
 
@@ -335,7 +364,9 @@
         document.getElementById('games-title').textContent = txt.games;
         document.getElementById('reviews-title').textContent = txt.reviews;
         document.getElementById('online-txt').textContent = txt.online;
-        document.getElementById('wa-link').textContent = txt.video;
+        
+        document.getElementById('vid-txt').textContent = txt.video;
+        document.getElementById('wa-link').href = WA_LINK;
         document.getElementById('dl-text').textContent = txt.download; 
 
         document.getElementById('rev-txt-1').textContent = `"${txt.rev1}"`;
