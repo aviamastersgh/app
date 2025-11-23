@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>Play & Earn — Daily Cash</title>
+<meta name="description" content="Play games and withdraw to Mobile Money instantly.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+    /* --- CORE VARIABLES & RESET --- */
+    :root {
+        --bg-dark: #0a0b0f;
+        --card-bg: #15171e;
+        --gold: #FFD700;
+        --green: #00C853; /* Vibrant Trust Green */
+        --red: #FF3D00;
+        --accent: #2962FF; /* Trust Blue */
+        --text: #ffffff;
+        --text-muted: #9e9ea5;
+        --radius: 16px;
+    }
+
+    * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
+    body {
+        background-color: var(--bg-dark);
+        color: var(--text);
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        padding-bottom: 80px; /* Space for sticky footer */
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* --- UTILS --- */
+    .container { max-width: 480px; margin: 0 auto; padding: 16px; }
+    .flex-center { display: flex; align-items: center; justify-content: center; }
+    .pulse { animation: pulse-animation 2s infinite; }
+    
+    @keyframes pulse-animation {
+        0% { box-shadow: 0 0 0 0 rgba(0, 200, 83, 0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(0, 200, 83, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(0, 200, 83, 0); }
+    }
+
+    /* --- TOP TICKER (FOMO) --- */
+    .ticker-wrap {
+        width: 100%;
+        background: #1a1d26;
+        border-bottom: 1px solid #2a2d36;
+        height: 32px;
+        overflow: hidden;
+        white-space: nowrap;
+        position: relative;
+    }
+    .ticker {
+        display: inline-block;
+        animation: marquee 20s linear infinite;
+        font-size: 12px;
+        line-height: 32px;
+        color: var(--green);
+        font-weight: 600;
+    }
+    .ticker span { margin-right: 20px; }
+    .ticker b { color: #fff; }
+    
+    @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+    /* --- HERO SECTION --- */
+    .hero { text-align: center; margin-bottom: 20px; position: relative; }
+    
+    .online-pill {
+        background: rgba(46, 204, 113, 0.15);
+        border: 1px solid rgba(46, 204, 113, 0.3);
+        color: var(--green);
+        font-size: 11px;
+        font-weight: 700;
+        padding: 4px 12px;
+        border-radius: 20px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 10px;
+    }
+    .dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: blink 1s infinite; }
+    @keyframes blink { 50% { opacity: 0.4; } }
+
+    h1 {
+        font-size: 28px;
+        line-height: 1.1;
+        margin: 0 0 8px;
+        background: linear-gradient(to right, #fff, #FFD700);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-transform: uppercase;
+    }
+
+    .sub-text { color: var(--text-muted); font-size: 14px; margin: 0 auto 15px; max-width: 90%; }
+
+    /* --- TRUST & PAYMENT BADGES --- */
+    .payment-row {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+    .pay-badge {
+        background: #252830;
+        border: 1px solid #333;
+        border-radius: 6px;
+        padding: 6px 10px;
+        font-size: 10px;
+        font-weight: 700;
+        color: #ddd;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+    .pay-badge.mtn { color: #ffcc00; border-color: rgba(255, 204, 0, 0.2); }
+    .pay-badge.org { color: #ff6600; border-color: rgba(255, 102, 0, 0.2); }
+    .pay-badge.mpesa { color: #e30613; border-color: rgba(227, 6, 19, 0.2); }
+
+    /* --- MAIN CARD --- */
+    .main-card {
+        background: var(--card-bg);
+        border-radius: var(--radius);
+        padding: 20px;
+        border: 1px solid rgba(255,255,255,0.05);
+        box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
+    }
+
+    /* --- CTA BUTTON --- */
+    .cta-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        background: linear-gradient(180deg, #00E676 0%, #00C853 100%);
+        color: #003300;
+        font-weight: 900;
+        font-size: 18px;
+        padding: 16px;
+        border-radius: 12px;
+        text-transform: uppercase;
+        box-shadow: 0 4px 0 #009624, 0 8px 20px rgba(0,200,83,0.4);
+        transform: translateY(0);
+        transition: transform 0.1s, box-shadow 0.1s;
+        position: relative;
+        overflow: hidden;
+    }
+    .cta-btn:active {
+        transform: translateY(4px);
+        box-shadow: 0 0 0 #009624, 0 0 0 rgba(0,0,0,0);
+    }
+    /* Shine effect */
+    .cta-btn::after {
+        content: '';
+        position: absolute;
+        top: 0; left: -100%;
+        width: 50%; height: 100%;
+        background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
+        transform: skewX(-20deg);
+        animation: shine 3s infinite;
+    }
+    @keyframes shine { 100% { left: 200%; } }
+
+    .bonus-tag {
+        background: rgba(255, 215, 0, 0.1);
+        border: 1px dashed var(--gold);
+        color: var(--gold);
+        text-align: center;
+        padding: 8px;
+        border-radius: 8px;
+        margin-top: 12px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    /* --- GAMES GRID --- */
+    .section-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 24px 0 12px;
+    }
+    .section-title { font-weight: 700; font-size: 16px; color: #fff; display: flex; align-items: center; gap: 6px; }
+    
+    .games-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+    .game-card {
+        position: relative;
+        border-radius: 12px;
+        overflow: hidden;
+        aspect-ratio: 1/1;
+        background: #222;
+        border: 1px solid rgba(255,255,255,0.1);
+        transition: transform 0.2s;
+    }
+    .game-card:active { transform: scale(0.96); }
+    .game-card img { width: 100%; height: 100%; object-fit: cover; }
+    .game-overlay {
+        position: absolute;
+        bottom: 0; left: 0; width: 100%;
+        background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+        padding: 20px 4px 6px;
+        text-align: center;
+    }
+    .game-name { font-size: 10px; color: #fff; font-weight: 600; text-transform: uppercase; }
+    
+    /* HOT Badge */
+    .hot-badge {
+        position: absolute;
+        top: 0; right: 0;
+        background: var(--red);
+        color: white;
+        font-size: 9px;
+        padding: 2px 6px;
+        border-bottom-left-radius: 8px;
+        font-weight: 800;
+    }
+
+    /* --- STEPS (How to Earn) --- */
+    .steps {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        padding: 15px;
+        background: rgba(255,255,255,0.03);
+        border-radius: 12px;
+    }
+    .step { text-align: center; width: 30%; }
+    .step-icon { font-size: 20px; margin-bottom: 6px; display: block; }
+    .step-text { font-size: 11px; color: #ccc; line-height: 1.2; }
+
+    /* --- NOTIFICATION TOAST (Fake Withdrawals) --- */
+    .toast {
+        position: fixed;
+        top: 60px; right: -100%; /* Hidden by default */
+        background: rgba(20, 25, 20, 0.95);
+        backdrop-filter: blur(8px);
+        border-left: 4px solid var(--green);
+        padding: 10px 15px;
+        border-radius: 4px;
+        color: #fff;
+        font-size: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        transition: right 0.5s ease;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        max-width: 90%;
+    }
+    .toast.show { right: 10px; }
+    .toast-icon { color: var(--green); font-size: 16px; }
+
+    /* --- STICKY FOOTER CTA --- */
+    .sticky-footer {
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        background: rgba(0,0,0,0.9);
+        padding: 12px 16px;
+        border-top: 1px solid #333;
+        display: none; /* Shown via JS on scroll */
+        z-index: 99;
+    }
+    .btn-small {
+        background: var(--green);
+        color: #000;
+        width: 100%;
+        padding: 12px;
+        text-align: center;
+        border-radius: 8px;
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: 14px;
+    }
+
+</style>
+</head>
+<body>
+
+<div class="ticker-wrap">
+    <div class="ticker">
+        <span>🔥 <b>Samuel M.</b> just won 45,000 XAF</span>
+        <span>🚀 <b>Kofi A.</b> withdrew 12,000 NGN</span>
+        <span>💎 <b>Grace L.</b> hit 50x Multiplier</span>
+        <span>🔥 <b>Emmanuel</b> just registered</span>
+        <span>💸 <b>Chisom</b> withdrew via MTN</span>
+    </div>
+</div>
+
+<div class="container">
+    <div class="hero">
+        <div class="online-pill">
+            <div class="dot"></div> <span id="t-live">1,842 People Online</span>
+        </div>
+        <h1 id="t-title">EARN DAILY CASH <br><span style="color:var(--green)">ON YOUR PHONE</span></h1>
+        <p class="sub-text" id="t-sub">Play simple games. Instant withdrawals to Mobile Money. No experience needed.</p>
+
+        <div class="payment-row">
+            <div class="pay-badge mtn">MTN MoMo</div>
+            <div class="pay-badge org">Orange Money</div>
+            <div class="pay-badge mpesa">M-Pesa</div>
+            <div class="pay-badge">Airtel</div>
+        </div>
+    </div>
+
+    <div class="main-card">
+        <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:12px; color:#888;">
+            <span>Welcome Bonus:</span>
+            <span style="color:var(--red); font-weight:700;" id="timer">04:59</span>
+        </div>
+
+        <a href="#" class="cta-btn" id="cta-main">
+            REGISTER & PLAY
+        </a>
+        
+        <div class="bonus-tag">
+            💰 Deposit $1 = <b>Get 500% Bonus</b>
+        </div>
+
+        <div class="steps">
+            <div class="step">
+                <span class="step-icon">🎮</span>
+                <div class="step-text">Choose Game</div>
+            </div>
+            <div class="step">
+                <span class="step-icon">📈</span>
+                <div class="step-text">Win Cash</div>
+            </div>
+            <div class="step">
+                <span class="step-icon">💸</span>
+                <div class="step-text">Instant Payout</div>
+            </div>
+        </div>
+
+        <div style="margin-top:15px; display:flex; gap:10px;">
+            <a href="#" id="wa-link" style="flex:1; background:#20232b; color:#fff; padding:10px; border-radius:8px; font-size:12px; display:flex; align-items:center; justify-content:center; gap:6px; border:1px solid #333;">
+                <span style="color:#25D366; font-size:16px;">●</span> WhatsApp Group
+            </a>
+            <a href="#" id="guide-link" style="flex:1; background:#20232b; color:#fff; padding:10px; border-radius:8px; font-size:12px; display:flex; align-items:center; justify-content:center; gap:6px; border:1px solid #333;">
+                <span>📺</span> How to Play
+            </a>
+        </div>
+    </div>
+
+    <div class="section-head">
+        <div class="section-title">🔥 High Payout Games</div>
+        <a href="#" style="font-size:12px; color:var(--green);">See All ></a>
+    </div>
+
+    <div class="games-grid">
+        <a href="https://1wgcmt.com/casino/play/infingames_galaxsys_play_me/?open=register&p=xzbf" class="game-card">
+            <div class="hot-badge">HOT</div>
+            <img src="game1.webp" loading="lazy" alt="Game">
+            <div class="game-overlay"><div class="game-name">Play Me</div></div>
+        </a>
+        <a href="https://lkxw.cc/dd4dc258" class="game-card">
+            <img src="game2.webp" loading="lazy" alt="Game">
+            <div class="game-overlay"><div class="game-name">Tower Rush</div></div>
+        </a>
+        <a href="https://1wgcmt.com/casino/play/v_evolution:1winicefishing/?open=register&p=48a3" class="game-card">
+            <div class="hot-badge">NEW</div>
+            <img src="game3.webp" loading="lazy" alt="Game">
+            <div class="game-overlay"><div class="game-name">Ice Fishing</div></div>
+        </a>
+        <a href="https://lkpq.cc/47fd0b" class="game-card">
+            <img src="game4.webp" loading="lazy" alt="Game">
+            <div class="game-overlay"><div class="game-name">Aviamasters</div></div>
+        </a>
+        <a href="https://1wgcmt.com/casino/play/infingames_galaxsys_chicken_crash/?open=register&p=t33c" class="game-card">
+            <img src="game5.webp" loading="lazy" alt="Game">
+            <div class="game-overlay"><div class="game-name">Chicken</div></div>
+        </a>
+        <a href="https://lkxw.cc/ed7b9f" class="game-card">
+            <img src="game6.webp" loading="lazy" alt="Game">
+            <div class="game-overlay"><div class="game-name">Mines</div></div>
+        </a>
+    </div>
+    
+    <div style="text-align:center; margin-top:30px; font-size:11px; color:#555;">
+        <p>Licensed Operator. 18+ Only.<br>Play Responsibly.</p>
+    </div>
+</div>
+
+<div class="sticky-footer" id="sticky-foot">
+    <a href="#" class="btn-small" id="cta-sticky">🚀 JOIN NOW - GET BONUS</a>
+</div>
+
+<div class="toast" id="toast">
+    <div class="toast-icon">✅</div>
+    <div>
+        <div style="font-weight:700; font-size:11px; color:#ccc">Just Withdrawn</div>
+        <div style="font-weight:bold; color:#fff" id="toast-msg">Musa just withdrew $12</div>
+    </div>
+</div>
+
+<script>
+    // --- CONFIG ---
+    const MAIN_LINK = "https://1wgcmt.com/v3/3245/landing-universal-timer?p=6i9o";
+    const WA_LINK = "https://whatsapp.com/channel/0029Vb6IjfI4tRrn1IzWzP16/298";
+    
+    // --- SETUP LINKS ---
+    document.getElementById('cta-main').href = MAIN_LINK;
+    document.getElementById('cta-sticky').href = MAIN_LINK;
+    document.getElementById('wa-link').href = WA_LINK;
+    
+    // --- TIMER LOGIC (Restarts on refresh to keep urgency high) ---
+    function startTimer(duration, display) {
+        let timer = duration, minutes, seconds;
+        setInterval(function () {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+            display.textContent = minutes + ":" + seconds;
+            if (--timer < 0) timer = duration;
+        }, 1000);
+    }
+    startTimer(300, document.querySelector('#timer'));
+
+    // --- FAKE WITHDRAWAL NOTIFICATIONS (Social Proof) ---
+    const names = ["Kwame", "Chinedu", "Grace", "Samuel", "Aisha", "David", "Emmanuel", "Ngozi"];
+    const amounts = ["5,000 XAF", "2,000 NGN", "10,000 XAF", "$15", "$40", "100 GHS"];
+    
+    function showToast() {
+        const toast = document.getElementById('toast');
+        const name = names[Math.floor(Math.random() * names.length)];
+        const amt = amounts[Math.floor(Math.random() * amounts.length)];
+        
+        document.getElementById('toast-msg').innerHTML = `${name} withdrew <span style="color:#00E676">${amt}</span>`;
+        toast.classList.add('show');
+        
+        setTimeout(() => { toast.classList.remove('show'); }, 4000);
+    }
+
+    // Show first toast after 2 seconds, then every 8-15 seconds
+    setTimeout(showToast, 2000);
+    setInterval(() => {
+        if(Math.random() > 0.3) showToast();
+    }, 12000);
+
+    // --- STICKY FOOTER LOGIC ---
+    window.onscroll = function() {
+        const sticky = document.getElementById("sticky-foot");
+        if (window.pageYOffset > 300) {
+            sticky.style.display = "block";
+        } else {
+            sticky.style.display = "none";
+        }
+    };
+</script>
+</body>
+</html>

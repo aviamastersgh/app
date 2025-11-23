@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Quick Entry — All Games</title>
+  <style>
+    :root{--bg:#0f0f10;--card:#ffffff;--muted:#c7c7c7;--accent:#f6c249;--cta:#ff4d4f}
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto}
+    body{background:linear-gradient(180deg,#1b1b1d 0%, #3b1f16 60%);color:#fff;display:flex;justify-content:center;padding:28px}
+
+    .container{width:100%;max-width:920px}
+
+    .hero{padding:36px 20px 18px;display:flex;flex-direction:column;align-items:center;text-align:center}
+    .avatar{width:96px;height:96px;border-radius:50%;overflow:hidden;border:4px solid rgba(255,255,255,0.12)}
+    .avatar img{width:100%;height:100%;object-fit:cover}
+    h1{font-size:28px;margin:14px 0 6px}
+    p.lead{margin:0 0 18px;color:var(--muted);font-size:15px}
+
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.06));padding:18px;border-radius:16px;backdrop-filter:blur(6px)}
+
+    .cta-wrap{display:flex;flex-direction:column;gap:14px;align-items:center;margin:6px 12px}
+
+    /* MAIN CTA + PULSE */
+    .big-cta{
+      width:100%;max-width:700px;background:#fff;color:#111;border-radius:999px;
+      padding:18px 20px;font-weight:800;font-size:20px;text-decoration:none;
+      border:3px solid rgba(0,0,0,0.08);text-align:center;
+      animation:pulse 1.8s infinite;
+    }
+    @keyframes pulse{
+      0%{transform:scale(1);}
+      50%{transform:scale(1.06);}
+      100%{transform:scale(1);}
+    }
+
+    .secondary-row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+    .btn-secondary{
+      background:rgba(255,255,255,0.06);padding:12px 16px;border-radius:14px;color:#fff;
+      text-decoration:none;font-weight:600;border:1px solid rgba(255,255,255,0.04)
+    }
+
+    .promo{margin-top:4px;color:var(--accent);font-weight:700}
+    .micro{color:var(--muted);font-size:13px;margin-top:4px;text-align:center}
+
+    .games-title{margin-top:18px;text-align:center;font-weight:700}
+    .games{display:flex;gap:12px;overflow-x:auto;padding:12px 6px;margin-top:10px}
+    .game{
+      flex:0 0 180px;border-radius:12px;background:#fff;color:#111;
+      padding:10px;height:140px;display:flex;flex-direction:column;justify-content:flex-end;
+      position:relative;overflow:hidden;
+    }
+    .game img{
+      position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:0.88;
+    }
+    .game .label{
+      position:relative;background:rgba(255,255,255,0.95);
+      border-radius:8px;padding:6px;font-weight:700;text-align:center;
+    }
+
+    .foot{margin-top:14px;text-align:center;color:var(--muted);font-size:13px}
+
+    @media (max-width:640px){
+      h1{font-size:22px}
+      .big-cta{font-size:17px;padding:15px}
+      .game{flex:0 0 140px;height:120px}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <div class="hero">
+      <div class="avatar"><img src="avatar.jpg" alt="me"></div>
+      <h1 id="t-title">Games That Pay 💰</h1>
+      <p class="lead" id="t-sub">Sign up & start earning today!</p>
+    </div>
+
+    <div class="card">
+      <div class="cta-wrap">
+
+        <a class="big-cta" id="cta" href="#">👉 Register & unlock bonus</a>
+
+        <div class="secondary-row">
+          <a class="btn-secondary" href="#" id="guide">📘 Guide + vouchers</a>
+          <a class="btn-secondary" href="#" id="contact">✍️ Contact / WhatsApp</a>
+        </div>
+
+        <div class="promo">PROMO: <strong>AFRICA75</strong></div>
+        <div class="micro" id="t-tip">If page doesn’t load — open in browser & disable VPN.</div>
+      </div>
+
+      <div class="games-title" id="t-games">Games available after registration</div>
+
+      <div class="games">
+        <div class="game"><img src="game1.jpg"><div class="label">PlayMe</div></div>
+        <div class="game"><img src="game2.jpg"><div class="label">Tower Rush</div></div>
+        <div class="game"><img src="game3.jpg"><div class="label">Chicken Crash</div></div>
+        <div class="game"><img src="game4.jpg"><div class="label">Crash & Slots</div></div>
+        <div class="game"><img src="game5.jpg"><div class="label">Aviamasters</div></div>
+        <div class="game"><img src="game6.jpg"><div class="label">SpinX</div></div>
+      </div>
+
+      <div class="foot" id="t-foot">Need help? Contact me. Works on iOS & Android.</div>
+    </div>
+  </div>
+
+  <script>
+    /* USE YOUR LINKS HERE */
+    const PRIMARY_LINK = "https://your-reg-link.com";
+    const GUIDE_LINK = "https://your-guide.com";
+    const CONTACT_LINK = "https://wa.me/YourNumber";
+
+    document.getElementById("cta").href = PRIMARY_LINK;
+    document.getElementById("guide").href = GUIDE_LINK;
+    document.getElementById("contact").href = CONTACT_LINK;
+
+    /* AUTO TRANSLATE (browser language detection) */
+    const text = {
+        fr: {
+            title:"Jeux qui rapportent 💰",
+            sub:"Inscrivez-vous et commencez à gagner dès maintenant !",
+            tip:"Si la page ne s’ouvre pas — ouvrez dans le navigateur et désactivez le VPN.",
+            games:"Jeux disponibles après inscription",
+            foot:"Besoin d’aide ? Contactez-moi. Fonctionne sur iOS et Android.",
+            cta:"👉 S’inscrire & débloquer le bonus",
+            guide:"📘 Guide + bons",
+            contact:"✍️ WhatsApp"
+        },
+        pt:{ 
+            title:"Jogos que pagam 💰",
+            sub:"Registre-se e comece a ganhar hoje!",
+            tip:"Se não abrir — use navegador e desligue VPN.",
+            games:"Jogos disponíveis após registro",
+            foot:"Precisa de ajuda? Fale comigo.",
+            cta:"👉 Registrar & pegar bônus",
+            guide:"📘 Guia + vouchers",
+            contact:"✍️ WhatsApp"
+        },
+        en:{} // для английского оставляем пустым, так как текст уже прямой
+    };
+
+    const lang = navigator.language.slice(0,2);
+    const pack = text[lang];
+
+    if(pack){
+      document.getElementById("t-title").innerText = pack.title;
+      document.getElementById("t-sub").innerText = pack.sub;
+      document.getElementById("t-tip").innerText = pack.tip;
+      document.getElementById("t-games").innerText = pack.games;
+      document.getElementById("t-foot").innerText = pack.foot;
+
+      document.getElementById("cta").innerText = pack.cta;
+      document.getElementById("guide").innerText = pack.guide;
+      document.getElementById("contact").innerText = pack.contact;
+    }
+  </script>
+
+</body>
+</html>

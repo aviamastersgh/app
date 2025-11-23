@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>Security Check</title>
+<style>
+    /* --- RESET & VARS --- */
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    :root {
+        --bg: #121212; --card: #1e1e1e; --text: #ffffff;
+        --sub: #a0a0a0; --accent: #2ecc71; --gold: #FFC107;
+        --btn-grad: linear-gradient(180deg, #2ecc71 0%, #27ae60 100%);
+        --danger: #e74c3c;
+    }
+    body {
+        background: var(--bg); color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        margin: 0; padding: 0; overflow-x: hidden;
+    }
+
+    /* --- 1. WEBVIEW GUIDE (ЗАЩИТА ОТ TIKTOK) --- */
+    #webview-guide {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: #000; z-index: 10000;
+        display: none;
+        flex-direction: column; align-items: center; justify-content: center;
+        text-align: center; padding: 20px;
+    }
+    .arrow-pointer {
+        position: absolute; top: 20px; right: 20px;
+        font-size: 50px; color: var(--gold);
+        animation: bounce 1.5s infinite;
+    }
+    .wv-text { font-size: 20px; font-weight: 800; color: #fff; margin-top: 100px; line-height: 1.5; }
+    .wv-sub { font-size: 14px; color: #ccc; margin-top: 10px; }
+    @keyframes bounce { 0%, 100% { transform: translate(0, 0) rotate(45deg); } 50% { transform: translate(10px, -10px) rotate(45deg); } }
+
+    /* --- 2. MAIN APP STYLES --- */
+    #main-app { display: none; padding: 15px; max-width: 450px; margin: 0 auto 80px; }
+    
+    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .status { font-size: 12px; color: var(--accent); display: flex; align-items: center; gap: 5px; font-weight: 600; }
+    .status-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; animation: blink 2s infinite; }
+    
+    .hero { text-align: center; margin-bottom: 20px; }
+    h1 { margin: 0 0 5px; font-size: 24px; font-weight: 800; }
+    h1 span { color: var(--accent); }
+    .sub-hero { color: var(--sub); font-size: 14px; margin: 0; }
+
+    .timer-badge {
+        background: rgba(231, 76, 60, 0.15); color: var(--danger);
+        font-weight: 700; font-size: 13px; padding: 4px 10px;
+        border-radius: 4px; margin-top: 10px; display: inline-block;
+    }
+
+    .main-cta {
+        display: flex; align-items: center; justify-content: center; width: 100%;
+        background: var(--btn-grad); color: #fff; padding: 16px;
+        border-radius: 12px; font-size: 18px; font-weight: 700;
+        text-decoration: none; text-transform: uppercase; margin-top: 15px;
+        box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+        animation: pulse 2s infinite; border: none;
+    }
+
+    .promo-box {
+        margin-top: 12px; border: 1px dashed var(--gold);
+        background: rgba(255, 193, 7, 0.05); padding: 10px;
+        border-radius: 8px; text-align: center; font-size: 14px; width: 100%;
+    }
+    .code { font-weight: 800; color: var(--gold); font-size: 16px; letter-spacing: 1px; }
+
+    /* Support Buttons & Download Loading */
+    .support-row { display: flex; gap: 10px; margin-top: 15px; width: 100%; }
+    .sec-btn {
+        flex: 1; background: var(--card); padding: 12px 10px;
+        border-radius: 8px; text-align: center; font-size: 12px;
+        color: #ccc; text-decoration: none; border: 1px solid #333;
+        display: flex; align-items: center; justify-content: center; gap: 6px;
+        transition: 0.3s;
+    }
+    .sec-btn.loading { background: #333; color: var(--accent); pointer-events: none; }
+
+    .section-title { font-size: 16px; font-weight: 700; margin: 30px 0 10px; color: #fff; border-left: 3px solid var(--accent); padding-left: 10px; }
+    .games-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; }
+    .game-item { background: #222; border-radius: 10px; aspect-ratio: 1/1; overflow: hidden; position: relative; }
+    .game-item img { width: 100%; height: 100%; object-fit: cover; }
+    .game-title {
+        position: absolute; bottom: 0; left: 0; width: 100%;
+        background: rgba(0,0,0,0.8); color: #fff;
+        font-size: 10px; text-align: center; padding: 3px 0;
+    }
+
+    .reviews { margin-top: 30px; }
+    .review-card { background: var(--card); padding: 12px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #2a2a2a; }
+    .r-head { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 12px; }
+    .r-name { font-weight: 700; color: #fff; }
+    .r-money { color: var(--accent); font-weight: 700; }
+    .r-text { font-size: 12px; color: var(--sub); font-style: italic; }
+
+    .sticky-bar {
+        position: fixed; bottom: 0; left: 0; width: 100%;
+        background: rgba(18,18,18,0.95); padding: 10px 15px;
+        border-top: 1px solid #333; backdrop-filter: blur(5px);
+        display: flex; justify-content: center; 
+    }
+    .stick-btn {
+        display: block; width: 100%; max-width: 420px; 
+        background: #fff; color: #000;
+        text-align: center; padding: 12px; border-radius: 8px;
+        font-weight: 700; text-decoration: none; font-size: 14px;
+    }
+
+    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+    @keyframes blink { 50% { opacity: 0.5; } }
+</style>
+</head>
+<body>
+
+<div id="webview-guide">
+    <div class="arrow-pointer">➤</div>
+    <div class="wv-text">
+        PLEASE OPEN IN<br>
+        <span style="color:var(--gold)">CHROME / SAFARI</span>
+    </div>
+    <div class="wv-sub">
+        1. Tap the <b>...</b> or <b>Share</b> icon above<br>
+        2. Select <b>Open in Browser</b>
+    </div>
+</div>
+
+<div id="main-app">
+    <div class="top-bar">
+        <div style="font-weight:900; font-style:italic;">WIN<span style="color:var(--gold)">BIG</span></div>
+        <div class="status"><div class="status-dot"></div> <span id="online-txt">2,104 Online</span></div>
+    </div>
+
+    <div class="hero">
+        <h1 id="hero-title">Play Games & <br><span>Earn Daily</span></h1>
+        <p class="sub-hero" id="hero-sub">Instant withdrawal to Mobile Money.</p>
+        
+        <div class="timer-badge">
+            <span id="timer-label">Bonus ends:</span> <span id="timer">05:00</span>
+        </div>
+
+        <a href="#" class="main-cta" id="cta-link">🚀 <span id="btn-txt">REGISTER NOW</span></a>
+        
+        <div class="promo-box">
+            <span id="promo-label">Use Promo:</span> <span class="code">AFRICA75</span>
+        </div>
+
+        <div class="support-row">
+            <a href="#" class="sec-btn" id="wa-link">📹 Video Guide</a>
+            <a href="#" class="sec-btn" id="dl-link" onclick="startDownload(event)">
+                <span id="dl-text">Download App</span>
+            </a>
+        </div>
+        
+        <div style="margin-top:15px; font-size:10px; color:#555; display:flex; justify-content:center; gap:10px;">
+            <span style="color:#ffcc00">MTN MoMo</span> • 
+            <span style="color:#ff8800">Orange</span> • 
+            <span style="color:#e74c3c">M-Pesa</span> • 
+            <span style="color:#fff">Airtel</span>
+        </div>
+    </div>
+
+    <div class="section-title" id="games-title">🔥 Hot Games</div>
+    <div class="games-grid">
+        <a href="URL_GAME_1" class="game-item"><img src="game1.webp" loading="lazy" alt="G1"><div class="game-title">Play Me</div></a>
+        <a href="URL_GAME_2" class="game-item"><img src="game2.webp" loading="lazy" alt="G2"><div class="game-title">Tower rush</div></a>
+        <a href="URL_GAME_3" class="game-item"><img src="game3.webp" loading="lazy" alt="G3"><div class="game-title">Ice Fishing</div></a>
+        <a href="URL_GAME_4" class="game-item"><img src="game4.webp" loading="lazy" alt="G4"><div class="game-title">Aviamasters</div></a>
+        <a href="URL_GAME_5" class="game-item"><img src="game5.webp" loading="lazy" alt="G5"><div class="game-title">Chicken crash</div></a>
+        <a href="URL_GAME_6" class="game-item"><img src="game6.webp" loading="lazy" alt="G6"><div class="game-title">Minecraft</div></a>
+    </div>
+
+    <div class="section-title" id="reviews-title">💬 Player Reviews</div>
+    <div class="reviews">
+        <div class="review-card">
+            <div class="r-head"><span class="r-name">Emeka J.</span><span class="r-money" id="rev-amt-1">+ 5,000</span></div>
+            <div class="r-text" id="rev-txt-1">"Very fast withdrawal to MTN. Good app."</div>
+        </div>
+        <div class="review-card">
+            <div class="r-head"><span class="r-name">Sarah K.</span><span class="r-money" id="rev-amt-2">+ 12,500</span></div>
+            <div class="r-text" id="rev-txt-2">"The crash game is paying well today!"</div>
+        </div>
+        <div class="review-card">
+            <div class="r-head"><span class="r-name">Jean-Paul</span><span class="r-money" id="rev-amt-3">+ 2,000</span></div>
+            <div class="r-text" id="rev-txt-3">"Simple registration. I like it."</div>
+        </div>
+    </div>
+</div>
+
+<div class="sticky-bar" id="sticky-foot" style="display:none">
+    <a href="#" class="stick-btn" id="sticky-link">🔥 JOIN NOW</a>
+</div>
+
+<script>
+    /* --- НАСТРОЙКИ --- */
+    const MAIN_LINK = "https://1wgcmt.com/v3/3245/landing-universal-timer?p=6i9o";
+    const WA_LINK = "https://whatsapp.com/channel/0029Vb6IjfI4tRrn1IzWzP16/298";
+    // *** ИЗМЕНИТЕ ЭТУ КОНСТАНТУ НА ОТНОСИТЕЛЬНЫЙ ПУТЬ К ВАШЕМУ ФАЙЛУ В VERCEL (например, /myapp.apk) ***
+    const DOWNLOAD_LINK = "1win.apk"; 
+
+    /* --- ЛОГИКА ЗАПУСКА --- */
+    document.addEventListener("DOMContentLoaded", function() {
+        const ua = navigator.userAgent || navigator.vendor || window.opera;
+        // Проверка на встроенный браузер ТикТок/Инстаграм
+        const isWebView = (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1) || (ua.indexOf("Instagram") > -1) || (ua.indexOf("TikTok") > -1);
+
+        if (isWebView) {
+            // Если ТикТок - показываем инструкцию (КЛОАКА)
+            document.getElementById('webview-guide').style.display = 'flex';
+        } else {
+            // Если обычный браузер - запускаем сайт СРАЗУ (без проверки)
+            document.getElementById('main-app').style.display = 'block';
+            document.getElementById('sticky-foot').style.display = 'flex';
+            initApp();
+        }
+    });
+
+    /* --- ИМИТАЦИЯ ЗАГРУЗКИ ПРИЛОЖЕНИЯ --- */
+    function startDownload(e) {
+        e.preventDefault(); 
+        const btn = document.getElementById('dl-link');
+        const txt = document.getElementById('dl-text');
+        
+        btn.classList.add('loading');
+        txt.innerHTML = "⏳ 0%";
+        
+        setTimeout(() => { txt.innerHTML = "⏳ 34%"; }, 700);
+        setTimeout(() => { txt.innerHTML = "⏳ 89%"; }, 1600);
+        setTimeout(() => { 
+            txt.innerHTML = "✅ DONE"; 
+            // Переход на файл, размещенный на Vercel
+            window.location.href = DOWNLOAD_LINK; 
+        }, 2200);
+    }
+
+    /* --- ФУНКЦИОНАЛ САЙТА --- */
+    function initApp() {
+        document.getElementById('cta-link').href = MAIN_LINK;
+        document.getElementById('sticky-link').href = MAIN_LINK;
+        document.getElementById('wa-link').href = WA_LINK;
+        
+        localize();
+        startTimer(300, document.querySelector('#timer'));
+    }
+
+    /* --- БАЗА ПЕРЕВОДОВ (добавлен RU) --- */
+    const content = {
+        en: {
+            hero: "Play Games & <br><span>Earn Daily</span>", sub: "Instant withdrawal to Mobile Money.",
+            btn: "REGISTER NOW", timer: "Bonus ends:", promo: "Use Promo:",
+            games: "🔥 Hot Games", reviews: "💬 Player Reviews", online: "2,104 Online",
+            rev1: "Very fast withdrawal to MTN. Good app.", rev2: "The crash game is paying well today!", rev3: "Simple registration. I like it.",
+            currency: "GHS",
+            video: "📹 Video Guide",
+            download: "📲 Download App"
+        },
+        fr: {
+            hero: "Jouez et <br><span>Gagnez Cash</span>", sub: "Retraits instantanés (Orange/MTN).",
+            btn: "S'INSCRIRE", timer: "Bonus expire:", promo: "Code Promo:",
+            games: "🔥 Jeux Populaires", reviews: "💬 Avis Joueurs", online: "2,104 en ligne",
+            rev1: "Retrait très rapide vers Orange.", rev2: "Le jeu Crash paie bien !", rev3: "Inscription simple.",
+            currency: "XAF",
+            video: "📹 Guide Vidéo",
+            download: "📲 Télécharger"
+        },
+        pt: {
+            hero: "Jogue e <br><span>Ganhe Diário</span>", sub: "Saques rápidos via Mobile Money.",
+            btn: "REGISTRAR", timer: "Bônus expira:", promo: "Cód. Promo:",
+            games: "🔥 Jogos Quentes", reviews: "💬 Avaliações", online: "2,104 Online",
+            rev1: "Saque muito rápido.", rev2: "Ganhando bem no Aviator!", rev3: "Fácil de usar.",
+            currency: "AOA",
+            video: "📹 Guia de Vídeo",
+            download: "📲 Baixar App"
+        },
+        ru: {
+            hero: "Играй и <br><span>Зарабатывай</span>", sub: "Моментальный вывод на карту.",
+            btn: "РЕГИСТРАЦИЯ", timer: "Бонус истекает:", promo: "Промокод:",
+            games: "🔥 Лучшие Игры", reviews: "💬 Отзывы", online: "2,104 Онлайн",
+            rev1: "Вывели деньги за 5 минут. Отличное приложение.", rev2: "Сегодня слот хорошо дает!", rev3: "Быстрая регистрация. Мне нравится.",
+            currency: "RUB",
+            video: "📹 Видео Гайд",
+            download: "📲 Скачать App"
+        }
+    };
+
+    function localize() {
+        let lang = navigator.language.slice(0, 2);
+        
+        if (!content[lang]) lang = 'en';
+        
+        const txt = content[lang];
+
+        document.getElementById('hero-title').innerHTML = txt.hero;
+        document.getElementById('hero-sub').textContent = txt.sub;
+        document.getElementById('btn-txt').textContent = txt.btn;
+        document.getElementById('sticky-link').textContent = "🔥 " + txt.btn;
+        document.getElementById('timer-label').textContent = txt.timer;
+        document.getElementById('promo-label').textContent = txt.promo;
+        document.getElementById('games-title').textContent = txt.games;
+        document.getElementById('reviews-title').textContent = txt.reviews;
+        document.getElementById('online-txt').textContent = txt.online;
+        
+        document.getElementById('wa-link').textContent = txt.video;
+        document.getElementById('dl-text').textContent = txt.download; 
+
+        document.getElementById('rev-txt-1').textContent = `"${txt.rev1}"`;
+        document.getElementById('rev-txt-2').textContent = `"${txt.rev2}"`;
+        document.getElementById('rev-txt-3').textContent = `"${txt.rev3}"`;
+        
+        const curr = txt.currency;
+        document.getElementById('rev-amt-1').textContent = `+ 5,000 ${curr}`;
+        document.getElementById('rev-amt-2').textContent = `+ 12,500 ${curr}`;
+        document.getElementById('rev-amt-3').textContent = `+ 2,000 ${curr}`;
+    }
+
+    function startTimer(duration, display) {
+        let timer = duration, minutes, seconds;
+        setInterval(function () {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+            display.textContent = minutes + ":" + seconds;
+            if (--timer < 0) timer = duration;
+        }, 1000);
+    }
+</script>
+</body>
+</html>
