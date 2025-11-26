@@ -1,6 +1,6 @@
 // push-service-worker.js
 
-const ONE_HOUR = 60 * 60 * 1000;
+const ONE_HOUR = 30 * 1000;
 const ONE_DAY = 24 * 60 * 60 * 1000;
 const DB_NAME = 'push-db';
 const LANDING_URL = 'https://1wgcmt.com/v3/3245/landing-universal-timer?p=6i9o&utm_source=push'; 
