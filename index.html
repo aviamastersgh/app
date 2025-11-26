@@ -7,7 +7,31 @@
   OneSignalDeferred.push(async function(OneSignal) {
     await OneSignal.init({
       appId: "346747bb-3679-4eb6-a27c-5aac89423cfb",
+      autoResubscribe: true, 
+      // Отключаем все автоматические prompt, чтобы полностью контролировать вызов
+      welcomeNotification: { disable: true },
+      promptOptions: { slidedown: { enabled: false } } 
     });
+
+    // 1. Проверяем, есть ли уже подписка. isPushNotificationsEnabled()
+    // работает для проверки текущего статуса подписки.
+    const isSubscribed = await OneSignal.isPushNotificationsEnabled();
+    
+    // 2. Получаем текущее разрешение браузера. (default, granted, denied)
+    const permission = await OneSignal.getPermissionAsync();
+    
+    console.log("OneSignal Load Status: Permission:", permission, "Subscribed:", isSubscribed);
+
+    // 3. Вызываем Slidedown/браузерный запрос только, если статус 'default' (нет выбора)
+    if (permission === 'default' && !isSubscribed) {
+        // Запрос разрешения. Выберите один из двух методов:
+
+        // A. (Рекомендуется) Используем Slidedown (UI OneSignal)
+        // OneSignal.Slidedown.promptPush(); 
+
+        // B. Или используем стандартный нативный запрос браузера
+        await OneSignal.Notifications.requestPermission(); 
+    }
   });
 </script>
 <meta charset="utf-8" />
