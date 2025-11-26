@@ -200,28 +200,27 @@
     .stick-btn.disabled { pointer-events: none; opacity: 0.6; }
 </style>
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+
 <script>
-    // 1. ЗАМЕНИТЕ ЭТО НА ВАШ РЕАЛЬНЫЙ APP ID ONESIGNAL!
-    const ONESIGNAL_APP_ID = "346747bb-3679-4eb6-a27c-5aac89423cfb"; 
-    
-    // 2. Инициализация OneSignal
-    window.OneSignal = window.OneSignal || [];
-    OneSignal.push(function() {
-        OneSignal.init({
-            appId: ONESIGNAL_APP_ID,
-            safari_web_id: 'ваш_safari_web_id_если_есть', 
-            notifyButton: { enable: false }, 
-            welcomeNotification: { disable: true }
-        });
-        
-        // Отправка тегов для CRM-сценариев в OneSignal
-        OneSignal.setExternalUserId("user_" + Date.now()); 
-        OneSignal.sendTags({
-             'status': 'subscribed',
-             'language': navigator.language.slice(0, 2),
-             'initial_time': Date.now().toString()
-        });
+document.addEventListener("DOMContentLoaded", async () => {
+    const OneSignal = window.OneSignal;
+
+    await OneSignal.initialize({
+        appId: "346747bb-3679-4eb6-a27c-5aac89423cfb",
     });
+
+    // Авторизация пользователя (аналог setExternalUserId)
+    OneSignal.login("user_" + Date.now());
+
+    // User properties (новый формат “tags”)
+    await OneSignal.User.addProperties({
+        lang: navigator.language.slice(0, 2),
+        time: Date.now().toString()
+    });
+
+    // Показываем запрос на разрешение
+    OneSignal.Notifications.requestPermission();
+});
 </script>
 </head>
 <body>
