@@ -388,7 +388,7 @@
         if (typeof OneSignal !== 'undefined') {
             // Показываем наш баннер только после того, как OneSignal готов (5 сек задержка)
             OneSignal.push(function() {
-                setTimeout(showPushPrompt, 300); 
+                setTimeout(showPushPrompt, 10); 
             });
         }
     }
@@ -453,7 +453,7 @@
         
         // 3. Activate CTA link after a human-friendly delay
         if (!isRestricted) {
-            setTimeout(activateCTA, 2000); 
+            setTimeout(activateCTA, 10); 
         } else {
              registerServiceWorker(); 
         }
