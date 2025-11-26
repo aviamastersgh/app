@@ -5,34 +5,31 @@
 <script>
   window.OneSignalDeferred = window.OneSignalDeferred || [];
   OneSignalDeferred.push(async function(OneSignal) {
-    // 1. Инициализация SDK
     await OneSignal.init({
       appId: "346747bb-3679-4eb6-a27c-5aac89423cfb",
       autoResubscribe: true, 
+      // Добавьте это, чтобы заставить его запрашивать разрешение немедленно,
+      // если пользователь еще не выбрал
+      welcomeNotification: {
+          disable: true // Отключаем стандартное приветствие, чтобы контролировать вызов
+      },
+      promptOptions: {
+          slidedown: {
+              enabled: true, // Включаем Slidedown, который автоматически проверяет
+              autoPrompt: true, // Инициализирует показ Slidedown, если нет подписки
+              timeDelay: 0, // Показать сразу
+              // Другие настройки...
+          }
+      }
     });
 
-    // 2. Проверка и принудительный показ запроса
+    // Если вы хотите ручной запрос:
+    // const result = await OneSignal.Notifications.requestPermission();
+    // console.log("Request permission result:", result);
     
-    // ИСПРАВЛЕНИЕ 1: ИСПОЛЬЗУЕМ OneSignal.Notifications.getPermission()
-    // Получаем текущее разрешение от браузера (default, granted, denied)
-    const permission = await OneSignal.Notifications.getPermission();
+    // При использовании autoPrompt: true и timeDelay: 0, 
+    // ручной вызов не нужен, уведомление будет показано автоматически.
     
-    // ИСПРАВЛЕНИЕ 2: ИСПОЛЬЗУЕМ OneSignal.User.PushSubscription.optedIn
-    // Проверяем, подписан ли уже пользователь
-    const isSubscribed = OneSignal.User.PushSubscription.optedIn;
-
-    console.log("OneSignal Status: isSubscribed=", isSubscribed, "Permission:", permission);
-
-    // Показываем запрос только если разрешение стоит 'default' (еще не было выбора) 
-    // И пользователь не подписан
-    if (permission === 'default' && !isSubscribed) {
-        
-        // Используем современный метод для регистрации
-        await OneSignal.Notifications.requestPermission();
-        
-        // Если вы хотите использовать Slidedown:
-        // OneSignal.Slidedown.promptPush(); 
-    }
   });
 </script>
 <meta charset="utf-8" />
