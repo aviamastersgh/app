@@ -6,9 +6,7 @@
 <meta name="description" content="Mobile App Gateway. Download and access securely." />
 <meta name="robots" content="noindex, nofollow" />
 <title>App Gateway</title>
-<link rel="manifest" href="manifest.json">
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.js" defer></script>
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<link rel="manifest" href="/manifest.json">
 <style>
     /* --- RESET & VARS --- */
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -201,33 +199,14 @@
     }
     .stick-btn.disabled { pointer-events: none; opacity: 0.6; }
 </style>
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
-document.addEventListener("DOMContentLoaded", async () => {
-
-    const wait = setInterval(() => {
-        if (window.OneSignal && OneSignal.initialize) {
-            clearInterval(wait);
-            start();
-        }
-    }, 50);
-
-    async function start() {
-        const OneSignal = window.OneSignal;
-
-        await OneSignal.initialize({
-            appId: "346747bb-3679-4eb6-a27c-5aac89423cfb",
-        });
-
-        OneSignal.login("user_" + Date.now());
-
-        OneSignal.User.addProperties({
-            lang: navigator.language.slice(0,2),
-            ts: Date.now()
-        });
-
-        OneSignal.Notifications.requestPermission();
-    }
-});
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "346747bb-3679-4eb6-a27c-5aac89423cfb",
+    });
+  });
 </script>
 </head>
 <body>
