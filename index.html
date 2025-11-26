@@ -5,9 +5,34 @@
 <script>
   window.OneSignalDeferred = window.OneSignalDeferred || [];
   OneSignalDeferred.push(async function(OneSignal) {
+    // 1. Инициализация SDK
     await OneSignal.init({
       appId: "346747bb-3679-4eb6-a27c-5aac89423cfb",
+      // Используйте параметр autoResubscribe, чтобы попробовать восстановить подписку, 
+      // если пользователь очистил кэш, но разрешение браузера осталось.
+      autoResubscribe: true, 
+      
+      // Если вы не хотите, чтобы OneSignal показывал свой собственный запрос (Slidedown) автоматически
+      // (т.к. вы хотите контролировать момент вызова), то убедитесь, что
+      // в настройках на сайте OneSignal для 'Prompting' выбран 'Only show the subscription bell'.
+      // ИЛИ отключите Welcome Notification (если оно вызывает запрос).
     });
+
+    // 2. Проверка и принудительный показ запроса
+    // Получаем текущее разрешение от браузера (default, granted, denied)
+    const permission = await OneSignal.getNotificationPermission();
+    // Проверяем, подписан ли уже пользователь
+    const isSubscribed = await OneSignal.isPushNotificationsEnabled();
+
+    // Показываем запрос только если разрешение стоит 'default' (еще не было выбора) 
+    // ИЛИ пользователь не подписан (но разрешение не 'denied')
+    if (permission === 'default' && !isSubscribed) {
+        // OneSignal.showSlidedownPrompt(); // Показывает красивый запрос от OneSignal
+        // ИЛИ
+        OneSignal.registerForPushNotifications(); // Показывает стандартный запрос браузера
+        
+        // ВНИМАНИЕ: showSlidedownPrompt() предпочтительнее для лучшего UX.
+    }
   });
 </script>
 <meta charset="utf-8" />
