@@ -3,138 +3,433 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<link rel="preload" as="image" href="game1.webp">
+<link rel="preload" as="image" href="game2.webp">
 <link rel="preload" as="image" href="game3.webp" fetchpriority="high">
+<link rel="preload" as="image" href="game4.webp">
+<link rel="preload" as="image" href="game5.webp">
+<link rel="preload" as="image" href="game6.webp">
+<link rel="preload" as="image" href="game7.webp">
+<link rel="preload" as="image" href="game8.webp">
 <meta name="description" content="Mobile App Gateway. Download and access securely." />
 <title>App Gateway</title>
 <style>
-/* Минифицированный и объединенный CSS (4.13 КБ) */
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}:root{--bg:#0f0f0f;--card:#1c1c1c;--text:#fff;--sub:#888;--accent:#2ecc71;--gold:#FFC107;--btn-grad:linear-gradient(180deg,#27ae60 0%,#2ecc71 100%);--danger:#e74c3c;--android:#3DDC84}body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;margin:0;padding:0;overflow-x:hidden}#webview-guide{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(15,15,15,.98);z-index:10000;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;backdrop-filter:blur(8px)}.guide-arrow{position:absolute;top:15px;right:20px;width:60px;height:60px;fill:var(--text);opacity:.8;animation:point-up 1.5s ease-in-out infinite}.guide-card{background:var(--card);border:1px solid #333;padding:30px 20px;border-radius:24px;box-shadow:0 10px 30px rgba(0,0,0,.3);max-width:340px;width:100%}.guide-icon{font-size:48px;margin-bottom:15px}.guide-title{font-size:20px;font-weight:700;color:#fff;margin-bottom:8px}.guide-sub{font-size:14px;color:var(--sub);margin-bottom:20px}.guide-steps{text-align:left;background:rgba(255,255,255,.05);padding:15px;border-radius:12px}.step-row{display:flex;gap:12px;margin-bottom:12px;font-size:14px;color:#ddd;align-items:center}.step-num{background:var(--text);color:#000;font-weight:700;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}@keyframes point-up{0%,100%{transform:translate(0,0)}50%{transform:translate(5px,-10px)}}#main-app{display:none;padding:15px;max-width:450px;margin:0 auto 80px}.top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.logo-area{font-weight:900;font-style:italic;font-size:18px;letter-spacing:-.5px}.status{font-size:12px;color:var(--accent);display:flex;align-items:center;gap:6px;font-weight:500;background:rgba(46,204,113,.1);padding:4px 8px;border-radius:20px}.status-dot{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:blink 2s infinite}.hero{text-align:center;margin-bottom:25px}h1{margin:0 0 8px;font-size:26px;font-weight:800;line-height:1.2}h1 span{color:var(--accent)}.sub-hero{color:var(--sub);font-size:14px;margin:0}.timer-badge{background:rgba(231,76,60,.1);color:var(--danger);font-weight:600;font-size:12px;padding:4px 8px;border-radius:6px;margin-top:12px;display:inline-block}.main-cta{display:flex;align-items:center;justify-content:center;width:100%;background:var(--btn-grad);color:#fff;padding:18px;border-radius:14px;font-size:20px;font-weight:800;text-decoration:none;text-transform:uppercase;margin-top:20px;box-shadow:0 4px 25px rgba(46,204,113,.3);animation:pulse 2s infinite;border:none;position:relative;z-index:2}.promo-box{margin-top:15px;border:1px dashed #444;background:rgba(255,255,255,.02);padding:12px;border-radius:10px;text-align:center;font-size:14px;width:100%}.code{font-weight:700;color:var(--gold);font-size:16px;margin-left:5px}.support-row{display:flex;gap:10px;margin-top:15px;width:100%}.sec-btn{flex:1;background:transparent;padding:12px 4px;border-radius:10px;text-align:center;font-size:11px;color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;gap:5px;transition:.2s;font-weight:600;white-space:nowrap}.sec-btn:active{background:rgba(255,255,255,.1)}.android-btn{flex:1;background:var(--android);color:#000;padding:12px 4px;border-radius:10px;text-align:center;font-size:11px;font-weight:800;text-decoration:none;border:none;display:flex;align-items:center;justify-content:center;gap:5px;transition:.2s;text-transform:uppercase;box-shadow:0 2px 10px rgba(61,220,132,.2);white-space:nowrap}.android-btn:active{transform:scale(.98)}.android-icon{width:16px;height:16px;fill:#000}.sec-btn.loading,.android-btn.loading{background:#333!important;color:var(--accent)!important;pointer-events:none;box-shadow:none!important;border:1px solid #333}.android-btn.loading .android-icon{fill:var(--accent)}.section-title{font-size:17px;font-weight:700;margin:35px 0 15px;color:#fff;display:flex;align-items:center;gap:8px}.section-title::before{content:'';width:4px;height:18px;background:var(--accent);border-radius:2px}.games-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%}.game-item{background:#222;border-radius:12px;aspect-ratio:1/1;overflow:hidden;position:relative;box-shadow:0 4px 10px rgba(0,0,0,.2)}.game-item img{width:100%;height:100%;object-fit:cover;transition:transform .3s}.game-title{position:absolute;bottom:0;left:0;width:100%;background:linear-gradient(0deg,rgba(0,0,0,.9) 0%,rgba(0,0,0,0) 100%);color:#fff;font-size:10px;text-align:center;padding:6px 2px 4px;font-weight:500}.reviews{margin-top:20px}.review-card{background:var(--card);padding:14px;border-radius:12px;margin-bottom:10px;border:1px solid #252525}.r-head{display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px}.r-name{font-weight:700;color:#fff}.r-money{color:var(--accent);font-weight:700}.r-text{font-size:13px;color:var(--sub);line-height:1.4}.sticky-bar{position:fixed;bottom:0;left:0;width:100%;background:rgba(15,15,15,.95);padding:12px 15px;border-top:1px solid #2a2a2a;backdrop-filter:blur(10px);display:flex;justify-content:center;z-index:900}.stick-btn{display:block;width:100%;max-width:420px;background:#fff;color:#000;text-align:center;padding:14px;border-radius:10px;font-weight:800;text-decoration:none;font-size:15px}@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.02)}100%{transform:scale(1)}}@keyframes blink{50%{opacity:.4}}
+    /* --- RESET & VARS --- */
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    :root {
+        --bg: #0f0f0f; --card: #1c1c1c; --text: #ffffff;
+        --sub: #888; --accent: #2ecc71; --gold: #FFC107;
+        --btn-grad: linear-gradient(180deg, #27ae60 0%, #2ecc71 100%);
+        --danger: #e74c3c;
+        --android: #3DDC84; 
+    }
+    body {
+        background: var(--bg); color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        margin: 0; padding: 0; overflow-x: hidden;
+    }
+
+    /* --- WEBVIEW GUIDE --- */
+    #webview-guide {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(15, 15, 15, 0.98); z-index: 10000;
+        display: none; flex-direction: column; align-items: center; justify-content: center;
+        padding: 20px; text-align: center; backdrop-filter: blur(8px);
+    }
+    .guide-arrow {
+        position: absolute; top: 15px; right: 20px; width: 60px; height: 60px;
+        fill: var(--text); opacity: 0.8; animation: point-up 1.5s ease-in-out infinite;
+    }
+    .guide-card {
+        background: var(--card); border: 1px solid #333; padding: 30px 20px;
+        border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); max-width: 340px; width: 100%;
+    }
+    .guide-icon { font-size: 48px; margin-bottom: 15px; }
+    .guide-title { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .guide-sub { font-size: 14px; color: var(--sub); margin-bottom: 20px; }
+    .guide-steps { text-align: left; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; }
+    .step-row { display: flex; gap: 12px; margin-bottom: 12px; font-size: 14px; color: #ddd; align-items: center; }
+    .step-num { background: var(--text); color: #000; font-weight: 700; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+    @keyframes point-up { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(5px, -10px); } }
+
+    /* --- MAIN APP STYLES --- */
+    #main-app { display: none; padding: 15px; max-width: 450px; margin: 0 auto 80px; }
+    
+    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .logo-area { font-weight: 900; font-style: italic; font-size: 18px; letter-spacing: -0.5px; }
+    .status { font-size: 12px; color: var(--accent); display: flex; align-items: center; gap: 6px; font-weight: 500; background: rgba(46, 204, 113, 0.1); padding: 4px 8px; border-radius: 20px; }
+    .status-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: blink 2s infinite; }
+    
+    .hero { text-align: center; margin-bottom: 25px; }
+    h1 { margin: 0 0 8px; font-size: 26px; font-weight: 800; line-height: 1.2; }
+    h1 span { color: var(--accent); }
+    .sub-hero { color: var(--sub); font-size: 14px; margin: 0; }
+
+    .timer-badge {
+        background: rgba(231, 76, 60, 0.1); color: var(--danger);
+        font-weight: 600; font-size: 12px; padding: 4px 8px;
+        border-radius: 6px; margin-top: 12px; display: inline-block;
+    }
+
+    /* ГЛАВНАЯ КНОПКА */
+    .main-cta {
+        display: flex; align-items: center; justify-content: center; width: 100%;
+        background: var(--btn-grad); color: #fff; padding: 18px;
+        border-radius: 14px; font-size: 20px; 
+        font-weight: 800;
+        text-decoration: none; text-transform: uppercase; margin-top: 20px;
+        box-shadow: 0 4px 25px rgba(46, 204, 113, 0.3);
+        animation: pulse 2s infinite; border: none;
+        position: relative; z-index: 2;
+    }
+
+    .promo-box {
+        margin-top: 15px; border: 1px dashed #444;
+        background: rgba(255,255,255,0.02); padding: 12px;
+        border-radius: 10px; text-align: center; font-size: 14px; width: 100%;
+    }
+    .code { font-weight: 700; color: var(--gold); font-size: 16px; margin-left: 5px; }
+
+    /* РЯД КНОПОК ПОДДЕРЖКИ */
+    .support-row { display: flex; gap: 10px; margin-top: 15px; width: 100%; }
+    
+    /* КНОПКА ВИДЕО + ВАУЧЕРЫ */
+    .sec-btn {
+        flex: 1; /* 50% */
+        background: transparent; 
+        padding: 12px 4px;
+        border-radius: 10px; text-align: center; 
+        font-size: 11px; /* Чуть меньше шрифт, чтобы влез длинный текст */
+        color: #fff; 
+        text-decoration: none; 
+        border: 1px solid rgba(255, 255, 255, 0.2); 
+        display: flex; align-items: center; justify-content: center; gap: 5px;
+        transition: 0.2s; font-weight: 600;
+        white-space: nowrap; /* Запрет переноса строк */
+    }
+    .sec-btn:active { background: rgba(255,255,255,0.1); }
+    
+    /* КНОПКА АНДРОИД */
+    .android-btn {
+        flex: 1; /* 50% */
+        background: var(--android); 
+        color: #000;
+        padding: 12px 4px; border-radius: 10px; 
+        text-align: center; 
+        font-size: 11px; /* Чуть меньше шрифт для симметрии */
+        font-weight: 800;
+        text-decoration: none; border: none;
+        display: flex; align-items: center; justify-content: center; gap: 5px;
+        transition: 0.2s; text-transform: uppercase;
+        box-shadow: 0 2px 10px rgba(61, 220, 132, 0.2);
+        white-space: nowrap;
+    }
+    .android-btn:active { transform: scale(0.98); }
+    .android-icon { width: 16px; height: 16px; fill: #000; }
+
+    .sec-btn.loading, .android-btn.loading { 
+        background: #333 !important; color: var(--accent) !important; 
+        pointer-events: none; box-shadow: none !important; border: 1px solid #333;
+    }
+    .android-btn.loading .android-icon { fill: var(--accent); }
+
+
+    .section-title { font-size: 17px; font-weight: 700; margin: 35px 0 15px; color: #fff; display: flex; align-items: center; gap: 8px; }
+    .section-title::before { content:''; width: 4px; height: 18px; background: var(--accent); border-radius: 2px; }
+    
+    .games-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; }
+    .game-item { background: #222; border-radius: 12px; aspect-ratio: 1/1; overflow: hidden; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+    .game-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+    .game-title {
+        position: absolute; bottom: 0; left: 0; width: 100%;
+        background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%); 
+        color: #fff; font-size: 10px; text-align: center; padding: 6px 2px 4px; font-weight: 500;
+    }
+
+    .reviews { margin-top: 20px; }
+    .review-card { background: var(--card); padding: 14px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #252525; }
+    .r-head { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px; }
+    .r-name { font-weight: 700; color: #fff; }
+    .r-money { color: var(--accent); font-weight: 700; }
+    .r-text { font-size: 13px; color: var(--sub); line-height: 1.4; }
+
+    .sticky-bar {
+        position: fixed; bottom: 0; left: 0; width: 100%;
+        background: rgba(15,15,15,0.95); padding: 12px 15px;
+        border-top: 1px solid #2a2a2a; backdrop-filter: blur(10px);
+        display: flex; justify-content: center; z-index: 900;
+    }
+    .stick-btn {
+        display: block; width: 100%; max-width: 420px; 
+        background: #fff; color: #000;
+        text-align: center; padding: 14px; border-radius: 10px;
+        font-weight: 800; text-decoration: none; font-size: 15px;
+    }
+
+    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+    @keyframes blink { 50% { opacity: 0.4; } }
 </style>
 </head>
 <body>
 
 <div id="webview-guide">
-    <svg class="guide-arrow" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M16.0037 9.41421L7.39712 18.0208L5.98291 16.6066L14.5895 8H7.00373V6H18.0037V17H16.0037V9.41421Z"/>
-    </svg>
-    <div class="guide-card">
-        <div class="guide-icon">📲</div>
-        <div class="guide-title" id="wv-title">Browser Required</div>
-        <div class="guide-sub" id="wv-sub">To continue, please switch browser.</div>
-        <div class="guide-steps">
-            <div class="step-row">
-                <div class="step-num">1</div>
-                <span id="wv-step1">Tap the menu icon (•••)</span>
-            </div>
-            <div class="step-row">
-                <div class="step-num">2</div>
-                <span id="wv-step2">Select "Open in Browser"</span>
-            </div>
-        </div>
-    </div>
+    <svg class="guide-arrow" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16.0037 9.41421L7.39712 18.0208L5.98291 16.6066L14.5895 8H7.00373V6H18.0037V17H16.0037V9.41421Z"/>
+    </svg>
+    <div class="guide-card">
+        <div class="guide-icon">📲</div>
+        <div class="guide-title" id="wv-title">Browser Required</div>
+        <div class="guide-sub" id="wv-sub">To continue, please switch browser.</div>
+        <div class="guide-steps">
+            <div class="step-row">
+                <div class="step-num">1</div>
+                <span id="wv-step1">Tap the menu icon (•••)</span>
+            </div>
+            <div class="step-row">
+                <div class="step-num">2</div>
+                <span id="wv-step2">Select "Open in Browser"</span>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div id="main-app">
-    <div class="top-bar">
-        <div class="logo-area">WIN<span style="color:var(--gold)">BIG</span></div>
-        <div class="status"><div class="status-dot"></div> <span id="online-txt">2,104 Online</span></div>
-    </div>
+    <div class="top-bar">
+        <div class="logo-area">WIN<span style="color:var(--gold)">BIG</span></div>
+        <div class="status"><div class="status-dot"></div> <span id="online-txt">2,104 Online</span></div>
+    </div>
 
-    <div class="hero">
-        <h1 id="hero-title">Play Games & <br><span>Earn Daily</span></h1>
-        <p class="sub-hero" id="hero-sub">Instant withdrawal to Mobile Money.</p>
-        
-        <div class="timer-badge">
-            <span id="timer-label">Bonus ends:</span> <span id="timer">05:00</span>
-        </div>
+    <div class="hero">
+        <h1 id="hero-title">Play Games & <br><span>Earn Daily</span></h1>
+        <p class="sub-hero" id="hero-sub">Instant withdrawal to Mobile Money.</p>
+        
+        <div class="timer-badge">
+            <span id="timer-label">Bonus ends:</span> <span id="timer">05:00</span>
+        </div>
 
-        <a href="#" class="main-cta" id="cta-link">🚀 <span id="btn-txt">REGISTER NOW</span></a>
-        
-        <div class="promo-box">
-            <span id="promo-label">Use Promo:</span> <span class="code">AFRICA75</span>
-        </div>
+        <a href="#" class="main-cta" id="cta-link">🚀 <span id="btn-txt">REGISTER NOW</span></a>
+        
+        <div class="promo-box">
+            <span id="promo-label">Use Promo:</span> <span class="code">AFRICA75</span>
+        </div>
 
-        <div class="support-row">
-            <a href="#" class="sec-btn" id="wa-link">📹 <span id="vid-txt">Video + Vouchers</span></a>
-            
-            <a href="#" class="android-btn" id="dl-link" onclick="startDownload(event)">
-                <svg class="android-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 0 0-.1521-.5676.416.416 0 0 0-.5676.1521l-2.0223 3.503C15.5902 8.4239 13.8533 8.0028 12 8.0028c-1.8533 0-3.5902.4211-5.1367.9668L4.8409 5.4667a.4161.4161 0 1 0-.7197.4155l1.9973 3.4592C2.6889 11.1867.3432 14.6589.0001 18.718h23.9998c-.3431-4.0591-2.6889-7.5313-6.1204-9.3966"/></svg>
-                <span id="dl-text">Android APK</span>
-            </a>
-        </div>
-        
-        <div style="margin-top:20px; opacity:0.7; font-size:10px; color:#555; display:flex; justify-content:center; gap:12px;">
-            <span style="border-bottom: 2px solid #ffcc00">MTN</span>
-            <span style="border-bottom: 2px solid #ff8800">Orange</span>
-            <span style="border-bottom: 2px solid #e74c3c">M-Pesa</span>
-            <span style="border-bottom: 2px solid #fff">Airtel</span>
-        </div>
-    </div>
+        <div class="support-row">
+            <a href="#" class="sec-btn" id="wa-link">📹 <span id="vid-txt">Video + Vouchers</span></a>
+            
+            <a href="#" class="android-btn" id="dl-link" onclick="startDownload(event)">
+                <svg class="android-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 0 0-.1521-.5676.416.416 0 0 0-.5676.1521l-2.0223 3.503C15.5902 8.4239 13.8533 8.0028 12 8.0028c-1.8533 0-3.5902.4211-5.1367.9668L4.8409 5.4667a.4161.4161 0 1 0-.7197.4155l1.9973 3.4592C2.6889 11.1867.3432 14.6589.0001 18.718h23.9998c-.3431-4.0591-2.6889-7.5313-6.1204-9.3966"/></svg>
+                <span id="dl-text">Android APK</span>
+            </a>
+        </div>
+        
+        <div style="margin-top:20px; opacity:0.7; font-size:10px; color:#555; display:flex; justify-content:center; gap:12px;">
+            <span style="border-bottom: 2px solid #ffcc00">MTN</span>
+            <span style="border-bottom: 2px solid #ff8800">Orange</span>
+            <span style="border-bottom: 2px solid #e74c3c">M-Pesa</span>
+            <span style="border-bottom: 2px solid #fff">Airtel</span>
+        </div>
+    </div>
 
-    <div class="section-title" id="games-title">🔥 Hot Games</div>
-    <div class="games-grid">
-        
-        <a href="https://1wgcmt.com/v3/3245/landing-universal-timer?p=6i9o" class="game-item">
-            <img src="game1.webp" alt="G1" width="150" height="150" decoding="async">
-            <div class="game-title">Happy Bird</div>
-        </a>
-        
-        <a href="https://1wgcmt.com/casino/play/infingames_galaxsys_play_me/?open=register&p=xzbf" class="game-item">
-            <img src="game2.webp" alt="G2" width="150" height="150" decoding="async">
-            <div class="game-title">Play me</div>
-        </a>
-        
-        <a href="https://lkxw.cc/dd4dc258" class="game-item">
-            <img src="game3.webp" alt="G3" width="150" height="150" fetchpriority="high" decoding="async">
-            <div class="game-title">Tower rush</div>
-        </a>
-        
-        <a href="https://lkpq.cc/47fd0b" class="game-item">
-            <img src="game4.webp" alt="G4" width="150" height="150" decoding="async">
-            <div class="game-title">Aviamasters</div>
-        </a>
-        
-        <a href="https://1wgcmt.com/casino/play/v_evolution:1winicefishing/?open=register&p=48a3" class="class="game-item"">
-            <img src="game5.webp" alt="G5" width="150" height="150" decoding="async">
-            <div class="game-title">Ice Fishing</div>
-        </a>
-        
-        <a href="https://1wgcmt.com/casino/play/infingames_galaxsys_chicken_crash/?open=register&p=t33c" class="game-item">
-            <img src="game6.webp" alt="G6" width="150" height="150" decoding="async">
-            <div class="game-title">Chicken crash</div>
-        </a>
-        
-        <a href="https://1wgcmt.com/v3/3245/landing-universal-timer?p=6i9o" class="game-item">
-            <img src="game7.webp" alt="G5" width="150" height="150" decoding="async">
-            <div class="game-title">Minecraft</div>
-        </a>
-        
-        <a href="https://1wgcmt.com/v3/3245/landing-universal-timer?p=6i9o" class="game-item">
-            <img src="game8.webp" alt="G6" width="150" height="150" decoding="async">
-            <div class="game-title">Aviator</div>
-        </a>
-        
-    </div>
+    <div class="section-title" id="games-title">🔥 Hot Games</div>
+    <div class="games-grid">
+    
+        <a href="https://1wgcmt.com/v3/3245/landing-universal-timer?p=6i9o" class="game-item">
+            <img src="game1.webp" alt="G1" width="150" height="150" decoding="async">
+            <div class="game-title">Happy Bird</div>
+        </a>
+    
+        <a href="https://1wgcmt.com/casino/play/infingames_galaxsys_play_me/?open=register&p=xzbf" class="game-item">
+            <img src="game2.webp" alt="G2" width="150" height="150" decoding="async">
+            <div class="game-title">Play me</div>
+        </a>
+    
+        <a href="https://lkxw.cc/dd4dc258" class="game-item">
+            <img src="game3.webp" alt="G3" width="150" height="150" fetchpriority="high" decoding="async">
+            <div class="game-title">Tower rush</div>
+        </a>
+    
+        <a href="https://lkpq.cc/47fd0b" class="game-item">
+            <img src="game4.webp" alt="G4" width="150" height="150" decoding="async">
+            <div class="game-title">Aviamasters</div>
+        </a>
+    
+        <a href="https://1wgcmt.com/casino/play/v_evolution:1winicefishing/?open=register&p=48a3" class="game-item">
+            <img src="game5.webp" alt="G5" width="150" height="150" decoding="async">
+            <div class="game-title">Ice Fishing</div>
+        </a>
+    
+        <a href="https://1wgcmt.com/casino/play/infingames_galaxsys_chicken_crash/?open=register&p=t33c" class="game-item">
+            <img src="game6.webp" alt="G6" width="150" height="150" decoding="async">
+            <div class="game-title">Chicken crash</div>
+        </a>
+    
+        <a href="https://1wgcmt.com/v3/3245/landing-universal-timer?p=6i9o" class="game-item">
+            <img src="game7.webp" alt="G5" width="150" height="150" decoding="async">
+            <div class="game-title">Minecraft</div>
+        </a>
+    
+        <a href="https://1wgcmt.com/v3/3245/landing-universal-timer?p=6i9o" class="game-item">
+            <img src="game8.webp" alt="G6" width="150" height="150" decoding="async">
+            <div class="game-title">Aviator</div>
+        </a>
+    
+    </div>
 
-    <div class="section-title" id="reviews-title">💬 Player Reviews</div>
-    <div class="reviews">
-        <div class="review-card">
-            <div class="r-head"><span class="r-name">Emeka J.</span><span class="r-money" id="rev-amt-1">+ 5,000</span></div>
-            <div class="r-text" id="rev-txt-1">"Very fast withdrawal to MTN. Good app."</div>
-        </div>
-        <div class="review-card">
-            <div class="r-head"><span class="r-name">Sarah K.</span><span class="r-money" id="rev-amt-2">+ 12,500</span></div>
-            <div class="r-text" id="rev-txt-2">"The crash game is paying well today!"</div>
-        </div>
-    </div>
+    <div class="section-title" id="reviews-title">💬 Player Reviews</div>
+    <div class="reviews">
+        <div class="review-card">
+            <div class="r-head"><span class="r-name">Emeka J.</span><span class="r-money" id="rev-amt-1">+ 5,000</span></div>
+            <div class="r-text" id="rev-txt-1">"Very fast withdrawal to MTN. Good app."</div>
+        </div>
+        <div class="review-card">
+            <div class="r-head"><span class="r-name">Sarah K.</span><span class="r-money" id="rev-amt-2">+ 12,500</span></div>
+            <div class="r-text" id="rev-txt-2">"The crash game is paying well today!"</div>
+        </div>
+    </div>
 </div>
 
 <div class="sticky-bar" id="sticky-foot" style="display:none">
-    <a href="#" class="stick-btn" id="sticky-link">🔥 JOIN NOW</a>
+    <a href="#" class="stick-btn" id="sticky-link">🔥 JOIN NOW</a>
 </div>
 
 <script>
-    const MAIN_LINK="https://1wgcmt.com/v3/3245/landing-universal-timer?p=6i9o";const WA_LINK="https://whatsapp.com/channel/0029Vb6IjfI4tRrn1IzWzP16/298";const DOWNLOAD_LINK="KofiGames.apk";function detectInAppBrowser(){const ua=navigator.userAgent||navigator.vendor||window.opera;const markers=['FBAN','FBAV','Instagram','TikTok','BytedanceWebview','wv'];return markers.some(marker=>ua.indexOf(marker)>-1)}document.addEventListener("DOMContentLoaded",function(){localize();if(detectInAppBrowser()){document.getElementById('webview-guide').style.display='flex';document.getElementById('main-app').style.display='none';document.getElementById('sticky-foot').style.display='none'}else{document.getElementById('main-app').style.display='block';document.getElementById('sticky-foot').style.display='flex';initApp()}});function startDownload(e){e.preventDefault();const btn=document.getElementById('dl-link');const txt=document.getElementById('dl-text');btn.classList.add('loading');txt.innerHTML="⏳ 0%";setTimeout(()=>{txt.innerHTML="⏳ 34%"},700);setTimeout(()=>{txt.innerHTML="⏳ 89%"},1600);setTimeout(()=>{txt.innerHTML="✅ DONE";window.location.href=DOWNLOAD_LINK},2200)}function initApp(){document.getElementById('cta-link').href=MAIN_LINK;document.getElementById('sticky-link').href=MAIN_LINK;document.getElementById('wa-link').href=WA_LINK;startTimer(300,document.querySelector('#timer'))}const content={en:{wv_title:"Browser Required",wv_sub:"For best experience, please switch.",wv_step1:"Tap the menu icon (•••)",wv_step2:"Select <b>'Open in Browser'</b>",hero:"Play Games & <br><span>Earn Daily</span>",sub:"Instant withdrawal to Mobile Money.",btn:"REGISTER NOW",timer:"Bonus ends:",promo:"Use Promo:",games:"🔥 Hot Games",reviews:"💬 Player Reviews",online:"2,104 Online",rev1:"Very fast withdrawal to MTN. Good app.",rev2:"The crash game is paying well today!",currency:"GHS",video:"Video Guide + Vouchers",download:"Android APK"},fr:{wv_title:"Navigateur Requis",wv_sub:"Pour continuer, changez de navigateur.",wv_step1:"Appuyez sur le menu (•••)",wv_step2:"Choisissez <b>'Ouvrir le navigateur'</b>",hero:"Jouez et <br><span>Gagnez Cash</span>",sub:"Retraits instantanés (Orange/MTN).",btn:"S'INSCRIRE",timer:"Bonus expire:",promo:"Code Promo:",games:"🔥 Jeux Populaires",reviews:"💬 Avis Joueurs",online:"2,104 en ligne",rev1:"Retrait très rapide vers Orange.",rev2:"Le jeu Crash paie bien !",currency:"XAF",video:"Vidéo + Vouchers",download:"APK Android"},pt:{wv_title:"Navegador Necessário",wv_sub:"Abra no Chrome para continuar.",wv_step1:"Toque no menu (•••)",wv_step2:"Escolha <b>'Abrir no Navegador'</b>",hero:"Jogue e <br><span>Ganhe Diário</span>",sub:"Saques rápidos via Mobile Money.",btn:"REGISTRAR",timer:"Bônus expira:",promo:"Cód. Promo:",games:"🔥 Jogos Quentes",reviews:"💬 Avaliações",online:"2,104 Online",rev1:"Saque muito rápido.",rev2:"Ganhando bem no Aviator!",currency:"AOA",video:"Vídeo + Vouchers",download:"Baixar App"},ru:{wv_title:"Нужен Браузер",wv_sub:"Для загрузки откройте в браузере.",wv_step1:"Нажмите на меню (•••)",wv_step2:"Выберите <b>'Открыть в браузере'</b>",hero:"Играй и <br><span>Зарабатывай</span>",sub:"Моментальный вывод на карту.",btn:"РЕГИСТРАЦИЯ",timer:"Бонус истекает:",promo:"Промокод:",games:"🔥 Лучшие Игры",reviews:"💬 Отзывы",online:"2,104 Онлайн",rev1:"Вывели деньги за 5 минут.",rev2:"Слот сегодня дает!",currency:"RUB",video:"Видео Гайд + Ваучеры",download:"Android APK"}}function localize(){let lang=navigator.language.slice(0,2);if(!content[lang])lang='en';const txt=content[lang];document.getElementById('wv-title').innerHTML=txt.wv_title;document.getElementById('wv-sub').textContent=txt.wv_sub;document.getElementById('wv-step1').innerHTML=txt.wv_step1;document.getElementById('wv-step2').innerHTML=txt.wv_step2;document.getElementById('hero-title').innerHTML=txt.hero;document.getElementById('hero-sub').textContent=txt.sub;document.getElementById('btn-txt').textContent=txt.btn;document.getElementById('sticky-link').textContent="🔥 "+txt.btn;document.getElementById('timer-label').textContent=txt.timer;document.getElementById('promo-label').textContent=txt.promo;document.getElementById('games-title').textContent=txt.games;document.getElementById('reviews-title').textContent=txt.reviews;document.getElementById('online-txt').textContent=txt.online;document.getElementById('vid-txt').textContent=txt.video;document.getElementById('wa-link').href=WA_LINK;document.getElementById('dl-text').textContent=txt.download;document.getElementById('rev-txt-1').textContent=`"${txt.rev1}"`;document.getElementById('rev-txt-2').textContent=`"${txt.rev2}"`;const curr=txt.currency;document.getElementById('rev-amt-1').textContent=`+ 5,000 ${curr}`;document.getElementById('rev-amt-2').textContent=`+ 12,500 ${curr}`}function startTimer(duration,display){let timer=duration,minutes,seconds;setInterval(function(){minutes=parseInt(timer/60,10);seconds=parseInt(timer%60,10);minutes=minutes<10?"0"+minutes:minutes;seconds=seconds<10?"0"+seconds:seconds;display.textContent=minutes+":"+seconds;if(--timer<0)timer=duration},1000)}
+    /* --- НАСТРОЙКИ --- */
+    const MAIN_LINK = "https://1wgcmt.com/v3/3245/landing-universal-timer?p=6i9o";
+    const WA_LINK = "https://whatsapp.com/channel/0029Vb6IjfI4tRrn1IzWzP16/298";
+    const DOWNLOAD_LINK = "KofiGames.apk"; 
+
+    /* --- ДЕТЕКТ --- */
+    function detectInAppBrowser() {
+        const ua = navigator.userAgent || navigator.vendor || window.opera;
+        const markers = ['FBAN', 'FBAV', 'Instagram', 'TikTok', 'BytedanceWebview', 'wv'];
+        return markers.some(marker => ua.indexOf(marker) > -1);
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        localize(); 
+        if (detectInAppBrowser()) {
+            document.getElementById('webview-guide').style.display = 'flex';
+            document.getElementById('main-app').style.display = 'none';
+            document.getElementById('sticky-foot').style.display = 'none';
+        } else {
+            document.getElementById('main-app').style.display = 'block';
+            document.getElementById('sticky-foot').style.display = 'flex';
+            initApp();
+        }
+    });
+
+    function startDownload(e) {
+        e.preventDefault(); 
+        const btn = document.getElementById('dl-link');
+        const txt = document.getElementById('dl-text');
+        btn.classList.add('loading');
+        txt.innerHTML = "⏳ 0%";
+        setTimeout(() => { txt.innerHTML = "⏳ 34%"; }, 700);
+        setTimeout(() => { txt.innerHTML = "⏳ 89%"; }, 1600);
+        setTimeout(() => { 
+            txt.innerHTML = "✅ DONE"; 
+            window.location.href = DOWNLOAD_LINK; 
+        }, 2200);
+    }
+
+    function initApp() {
+        document.getElementById('cta-link').href = MAIN_LINK;
+        document.getElementById('sticky-link').href = MAIN_LINK;
+        document.getElementById('wa-link').href = WA_LINK;
+        startTimer(300, document.querySelector('#timer'));
+    }
+
+    /* --- ПЕРЕВОДЫ --- */
+    const content = {
+        en: {
+            wv_title: "Browser Required", wv_sub: "For best experience, please switch.",
+            wv_step1: "Tap the menu icon (•••)", wv_step2: "Select <b>'Open in Browser'</b>",
+            hero: "Play Games & <br><span>Earn Daily</span>", sub: "Instant withdrawal to Mobile Money.",
+            btn: "REGISTER NOW", timer: "Bonus ends:", promo: "Use Promo:",
+            games: "🔥 Hot Games", reviews: "💬 Player Reviews", online: "2,104 Online",
+            rev1: "Very fast withdrawal to MTN. Good app.", rev2: "The crash game is paying well today!",
+            currency: "GHS", 
+            video: "Video Guide + Vouchers", // ОБНОВЛЕНО
+            download: "Android APK"
+        },
+        fr: {
+            wv_title: "Navigateur Requis", wv_sub: "Pour continuer, changez de navigateur.",
+            wv_step1: "Appuyez sur le menu (•••)", wv_step2: "Choisissez <b>'Ouvrir le navigateur'</b>",
+            hero: "Jouez et <br><span>Gagnez Cash</span>", sub: "Retraits instantanés (Orange/MTN).",
+            btn: "S'INSCRIRE", timer: "Bonus expire:", promo: "Code Promo:",
+            games: "🔥 Jeux Populaires", reviews: "💬 Avis Joueurs", online: "2,104 en ligne",
+            rev1: "Retrait très rapide vers Orange.", rev2: "Le jeu Crash paie bien !",
+            currency: "XAF", 
+            video: "Vidéo + Vouchers", // ОБНОВЛЕНО
+            download: "APK Android"
+        },
+        pt: {
+            wv_title: "Navegador Necessário", wv_sub: "Abra no Chrome para continuar.",
+            wv_step1: "Toque no menu (•••)", wv_step2: "Escolha <b>'Abrir no Navegador'</b>",
+            hero: "Jogue e <br><span>Ganhe Diário</span>", sub: "Saques rápidos via Mobile Money.",
+            btn: "REGISTRAR", timer: "Bônus expira:", promo: "Cód. Promo:",
+            games: "🔥 Jogos Quentes", reviews: "💬 Avaliações", online: "2,104 Online",
+            rev1: "Saque muito rápido.", rev2: "Ganhando bem no Aviator!",
+            currency: "AOA", 
+            video: "Vídeo + Vouchers", // ОБНОВЛЕНО
+            download: "Baixar App"
+        },
+        ru: {
+            wv_title: "Нужен Браузер", wv_sub: "Для загрузки откройте в браузере.",
+            wv_step1: "Нажмите на меню (•••)", wv_step2: "Выберите <b>'Открыть в браузере'</b>",
+            hero: "Играй и <br><span>Зарабатывай</span>", sub: "Моментальный вывод на карту.",
+            btn: "РЕГИСТРАЦИЯ", timer: "Бонус истекает:", promo: "Промокод:",
+            games: "🔥 Лучшие Игры", reviews: "💬 Отзывы", online: "2,104 Онлайн",
+            rev1: "Вывели деньги за 5 минут.", rev2: "Слот сегодня дает!",
+            currency: "RUB", 
+            video: "Видео Гайд + Ваучеры", // ОБНОВЛЕНО
+            download: "Android APK"
+        }
+    };
+
+    function localize() {
+        let lang = navigator.language.slice(0, 2);
+        if (!content[lang]) lang = 'en';
+        const txt = content[lang];
+
+        document.getElementById('wv-title').innerHTML = txt.wv_title;
+        document.getElementById('wv-sub').textContent = txt.wv_sub;
+        document.getElementById('wv-step1').innerHTML = txt.wv_step1;
+        document.getElementById('wv-step2').innerHTML = txt.wv_step2;
+
+        document.getElementById('hero-title').innerHTML = txt.hero;
+        document.getElementById('hero-sub').textContent = txt.sub;
+        document.getElementById('btn-txt').textContent = txt.btn;
+        document.getElementById('sticky-link').textContent = "🔥 " + txt.btn;
+        document.getElementById('timer-label').textContent = txt.timer;
+        document.getElementById('promo-label').textContent = txt.promo;
+        document.getElementById('games-title').textContent = txt.games;
+        document.getElementById('reviews-title').textContent = txt.reviews;
+        document.getElementById('online-txt').textContent = txt.online;
+        
+        document.getElementById('vid-txt').textContent = txt.video;
+        document.getElementById('wa-link').href = WA_LINK;
+        document.getElementById('dl-text').textContent = txt.download; 
+
+        document.getElementById('rev-txt-1').textContent = `"${txt.rev1}"`;
+        document.getElementById('rev-txt-2').textContent = `"${txt.rev2}"`;
+        
+        const curr = txt.currency;
+        document.getElementById('rev-amt-1').textContent = `+ 5,000 ${curr}`;
+        document.getElementById('rev-amt-2').textContent = `+ 12,500 ${curr}`;
+    }
+
+    function startTimer(duration, display) {
+        let timer = duration, minutes, seconds;
+        setInterval(function () {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+            display.textContent = minutes + ":" + seconds;
+            if (--timer < 0) timer = duration;
+        }, 1000);
+    }
 </script>
 </body>
 </html>
